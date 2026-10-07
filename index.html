@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perawatan Genset - STIEPAN (Cloud Sync)</title>
+    <title>Portal Program Kerja Merdeka - STIEPAN</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         @media print {
             body * {
@@ -18,6 +44,8 @@
                 left: 0;
                 top: 0;
                 width: 100%;
+                background: white;
+                padding: 20px;
             }
             .no-print {
                 display: none !important;
@@ -28,245 +56,43 @@
                 margin-top: 20px;
             }
             th, td {
-                border: 1px solid black !important;
+                border: 1px solid #333 !important;
                 padding: 8px;
-                text-align: left;
                 color: black !important;
-            }
-            h1, h2 {
-                color: black !important;
-                text-align: center;
-                margin-bottom: 20px;
+                font-size: 12px;
             }
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans p-4 md:p-8">
+<body class="h-full bg-slate-100 text-slate-800 font-sans antialiased flex flex-col md:flex-row overflow-hidden">
 
-    <div class="max-w-5xl mx-auto bg-white p-6 md:p-10 rounded-lg shadow-lg">
-        
-        <!-- Header Aplikasi -->
-        <div class="text-center mb-8 no-print">
-            <h1 class="text-2xl md:text-3xl font-bold text-blue-700">Form Perawatan Genset</h1>
-            <h2 class="text-lg md:text-xl font-semibold text-gray-600">Sekolah Tinggi Ilmu Ekonomi Balikpapan (STIEPAN)</h2>
-            <p class="text-xs text-green-600 mt-2 font-medium">● Sinkronisasi Cloud Google Sheets (Real-time)</p>
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col transition-all duration-300 z-30 shadow-xl flex-shrink-0">
+        <!-- Logo & Brand Header -->
+        <div class="p-5 border-b border-slate-800 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
+                    <i class="fa-solid fa-graduation-cap text-lg"></i>
+                </div>
+                <div>
+                    <h1 class="text-white font-bold text-base leading-tight">STIEPAN</h1>
+                    <p class="text-xs text-slate-400 font-medium">Program Kerja Merdeka</p>
+                </div>
+            </div>
+            <button id="mobileCloseBtn" class="md:hidden text-slate-400 hover:text-white">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
         </div>
 
-        <!-- Form Input -->
-        <form id="gensetForm" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8 no-print bg-gray-50 p-6 rounded border">
-            <div>
-                <label class="block text-sm font-medium mb-1">Tanggal</label>
-                <input type="date" id="tanggal" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
-            </div>
-            
-            <div>
-                <label class="block text-sm font-medium mb-1">Nama Petugas</label>
-                <input type="text" id="nama" required placeholder="Masukkan nama petugas" class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Jam Awal</label>
-                <input type="time" id="jamAwal" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium mb-1">Jam Akhir</label>
-                <input type="time" id="jamAkhir" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
-            </div>
-
-            <div class="md:col-span-2">
-                <label class="block text-sm font-medium mb-1">Kondisi Genset</label>
-                <select id="kondisi" required class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500">
-                    <option value="Normal">Normal</option>
-                    <option value="Bermasalah">Bermasalah</option>
-                </select>
-            </div>
-
-            <div id="keteranganContainer" class="md:col-span-2 hidden">
-                <label class="block text-sm font-medium mb-1">Keterangan Masalah</label>
-                <textarea id="keterangan" rows="3" placeholder="Jelaskan masalah pada genset..." class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:border-blue-500"></textarea>
-            </div>
-
-            <div class="md:col-span-2 mt-4">
-                <button type="submit" id="submitBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-200">
-                    Simpan Data ke Cloud
-                </button>
-            </div>
-        </form>
-
-        <!-- Tombol Aksi -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 no-print gap-2">
-            <h3 class="text-xl font-bold">Rekapan Perawatan (Cloud)</h3>
-            <div>
-                <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-200 mr-2 inline-flex items-center">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                    Print Tabel
-                </button>
-                <button onclick="muatData()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition duration-200">
-                    Refresh Data
-                </button>
-            </div>
-        </div>
-
-        <!-- Area Print & Tabel -->
-        <div id="print-area" class="overflow-x-auto">
-            <!-- Header khusus print -->
-            <div class="hidden print:block text-center mb-6">
-                <h1 style="font-size: 24px; font-weight: bold; margin-bottom: 5px;">LAPORAN PERAWATAN GENSET</h1>
-                <h2 style="font-size: 20px; font-weight: bold;">SEKOLAH TINGGI ILMU EKONOMI BALIKPAPAN</h2>
-                <hr style="border: 1px solid black; margin-top: 10px; margin-bottom: 20px;">
-            </div>
-
-            <table class="w-full table-auto border-collapse border border-gray-300">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="border border-gray-300 px-4 py-2 text-center">No</th>
-                        <th class="border border-gray-300 px-4 py-2">Tanggal</th>
-                        <th class="border border-gray-300 px-4 py-2">Nama Petugas</th>
-                        <th class="border border-gray-300 px-4 py-2 text-center">Jam Awal</th>
-                        <th class="border border-gray-300 px-4 py-2 text-center">Jam Akhir</th>
-                        <th class="border border-gray-300 px-4 py-2 text-center">Kondisi</th>
-                        <th class="border border-gray-300 px-4 py-2">Keterangan</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <tr>
-                        <td colspan="7" class="text-center py-4 text-gray-500 italic">Memuat data dari cloud...</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-
-    <script>
-        // URL Web App Google Apps Script Anda yang terhubung ke Google Sheets
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzU-gGwq2fuvRcfeRbZmCaGvDejtY84usbwJ1e2oSpfbw_ZeG1UmoAAO0uv68dXQ/exec";
-
-        const form = document.getElementById('gensetForm');
-        const kondisiSelect = document.getElementById('kondisi');
-        const keteranganContainer = document.getElementById('keteranganContainer');
-        const keteranganInput = document.getElementById('keterangan');
-        const tableBody = document.getElementById('tableBody');
-        const submitBtn = document.getElementById('submitBtn');
-
-        let dataPerawatan = [];
-
-        // Logic untuk menampilkan form keterangan jika kondisi bermasalah
-        kondisiSelect.addEventListener('change', function() {
-            if (this.value === 'Bermasalah') {
-                keteranganContainer.classList.remove('hidden');
-                keteranganInput.required = true;
-            } else {
-                keteranganContainer.classList.add('hidden');
-                keteranganInput.required = false;
-                keteranganInput.value = '';
-            }
-        });
-
-        // Fungsi mengambil data dari Google Sheets (Cloud)
-        async function muatData() {
-            tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-gray-500 italic">Memuat data dari cloud...</td></tr>`;
-            
-            try {
-                let response = await fetch(WEB_APP_URL);
-                let result = await response.json();
-                dataPerawatan = result;
-                renderTable();
-            } catch (error) {
-                console.error("Gagal memuat data:", error);
-                tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-red-500 italic">Gagal memuat data dari cloud. Periksa koneksi internet Anda.</td></tr>`;
-            }
-        }
-
-        // Fungsi render tabel
-        function renderTable() {
-            tableBody.innerHTML = '';
-            
-            if (dataPerawatan.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-4 text-gray-500 italic">Belum ada data rekapan.</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            dataPerawatan.forEach((data, index) => {
-                let formatTanggal = data.tanggal;
-                try {
-                    const dateObj = new Date(data.tanggal);
-                    if (!isNaN(dateObj)) {
-                        formatTanggal = dateObj.toLocaleDateString('id-ID', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-                    }
-                } catch (e) {
-                    formatTanggal = data.tanggal;
-                }
-
-                const kondisiStyle = data.kondisi === 'Normal' 
-                    ? '<span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs font-semibold">Normal</span>' 
-                    : '<span class="bg-red-100 text-red-800 px-2 py-1 rounded text-xs font-semibold">Bermasalah</span>';
-
-                const tr = document.createElement('tr');
-                tr.classList.add('hover:bg-gray-50');
-                tr.innerHTML = `
-                    <td class="border border-gray-300 px-4 py-2 text-center">${index + 1}</td>
-                    <td class="border border-gray-300 px-4 py-2 whitespace-nowrap">${formatTanggal}</td>
-                    <td class="border border-gray-300 px-4 py-2">${data.nama || '-'}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">${data.jamAwal || '-'}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">${data.jamAkhir || '-'}</td>
-                    <td class="border border-gray-300 px-4 py-2 text-center">${kondisiStyle}</td>
-                    <td class="border border-gray-300 px-4 py-2">${data.keterangan || '-'}</td>
-                `;
-                tableBody.appendChild(tr);
-            });
-        }
-
-        // Fungsi mengirim data baru ke Google Sheets (Cloud)
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const newData = {
-                tanggal: document.getElementById('tanggal').value,
-                nama: document.getElementById('nama').value,
-                jamAwal: document.getElementById('jamAwal').value,
-                jamAkhir: document.getElementById('jamAkhir').value,
-                kondisi: document.getElementById('kondisi').value,
-                keterangan: document.getElementById('keterangan').value || '-'
-            };
-
-            submitBtn.innerText = "Menyimpan ke Cloud...";
-            submitBtn.disabled = true;
-
-            try {
-                await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(newData)
-                });
-
-                // Beri jeda 1.5 detik agar data masuk ke Google Sheet, lalu muat ulang tabel
-                setTimeout(async () => {
-                    await muatData();
-                    form.reset();
-                    kondisiSelect.dispatchEvent(new Event('change'));
-                    submitBtn.innerText = "Simpan Data ke Cloud";
-                    submitBtn.disabled = false;
-                }, 1500);
-
-            } catch (error) {
-                console.error("Gagal menyimpan:", error);
-                alert("Terjadi kesalahan saat menyimpan data ke cloud.");
-                submitBtn.innerText = "Simpan Data ke Cloud";
-                submitBtn.disabled = false;
-            }
-        });
-
-        // Panggil fungsi muatData saat halaman pertama kali dibuka
-        muatData();
-    </script>
-</body>
-</html>
+        <!-- Navigation Links -->
+        <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+            <p class="px-3 text-[10px] font-semibold tracking-wider text-slate-500 uppercase mb-2">Menu Utama</p>
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all bg-brand-600 text-white shadow-lg shadow-brand-600/20">
+                <i class="fa-solid fa-chart-pie w-5 text-center"></i>
+                <span>Dashboard Utama</span>
+            </button>
+            <button onclick="switchTab('genset')" id="nav-genset" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-bolt w-5 text-center"></i>
+                <span>Perawatan Genset</span>
+            </button>
+            <button onclick="switchTab('agenda')" id="nav-agenda" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded
