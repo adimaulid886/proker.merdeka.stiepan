@@ -563,7 +563,7 @@
             });
         }
 
-        // Fungsi Memuat Data dengan Fallback Aman
+        // Fungsi Memuat Data dengan Format Jam Bersih
         async function muatData() {
             if(tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 italic">Memuat data...</td></tr>`;
             if(dashboardTableBody) dashboardTableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400 italic">Memuat data...</td></tr>`;
@@ -579,22 +579,30 @@
                 renderAll();
             } catch (error) {
                 console.warn("Gagal memuat dari cloud, menggunakan data lokal/fallback:", error);
-                // Fallback agar UI tetap tampil normal meskipun koneksi cloud gagal
                 dataPerawatan = JSON.parse(localStorage.getItem('dataGensetStiepan')) || [];
                 renderAll();
             }
         }
 
-        // Submit new data handler
+        // Submit new data handler dengan validasi Jam Awal & Jam Akhir
         if(form) {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
+                const jamAwal = document.getElementById('jamAwal').value;
+                const jamAkhir = document.getElementById('jamAkhir').value;
+
+                // Validasi: Jam Akhir tidak boleh lebih kecil dari Jam Awal
+                if (jamAkhir < jamAwal) {
+                    showToast('Jam akhir tidak boleh lebih awal dari jam mulai!', 'warning');
+                    return;
+                }
+
                 const newData = {
                     tanggal: document.getElementById('tanggal').value,
                     nama: document.getElementById('nama').value,
-                    jamAwal: document.getElementById('jamAwal').value,
-                    jamAkhir: document.getElementById('jamAkhir').value,
+                    jamAwal: jamAwal,
+                    jamAkhir: jamAkhir,
                     kondisi: document.getElementById('kondisi').value,
                     keterangan: document.getElementById('keterangan').value || '-'
                 };
