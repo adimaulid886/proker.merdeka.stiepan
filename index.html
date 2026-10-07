@@ -499,6 +499,18 @@
 
         let dataPerawatan = [];
 
+        // Fungsi Helper untuk membersihkan format jam agar hanya tampil HH:mm
+        function formatJam(val) {
+            if (!val) return '-';
+            let str = String(val);
+            // Ekstraksi pola jam HH:MM menggunakan Regex dari string tanggal apa pun
+            let match = str.match(/(\d{2}):(\d{2})/);
+            if (match) {
+                return match[1] + ':' + match[2];
+            }
+            return str;
+        }
+
         // Tab Navigation Logic
         function switchTab(tabId) {
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
@@ -563,7 +575,7 @@
             });
         }
 
-        // Fungsi Memuat Data dengan Format Jam Bersih
+        // Fungsi Memuat Data
         async function muatData() {
             if(tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 italic">Memuat data...</td></tr>`;
             if(dashboardTableBody) dashboardTableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400 italic">Memuat data...</td></tr>`;
@@ -592,7 +604,6 @@
                 const jamAwal = document.getElementById('jamAwal').value;
                 const jamAkhir = document.getElementById('jamAkhir').value;
 
-                // Validasi: Jam Akhir tidak boleh lebih kecil dari Jam Awal
                 if (jamAkhir < jamAwal) {
                     showToast('Jam akhir tidak boleh lebih awal dari jam mulai!', 'warning');
                     return;
@@ -675,6 +686,9 @@
                     formatTanggal = data.tanggal;
                 }
 
+                const bersihJamAwal = formatJam(data.jamAwal);
+                const bersihJamAkhir = formatJam(data.jamAkhir);
+
                 const kondisiStyle = data.kondisi === 'Normal' 
                     ? '<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-xs font-semibold">Normal</span>' 
                     : '<span class="bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full text-xs font-semibold">Bermasalah</span>';
@@ -685,8 +699,8 @@
                     <td class="border border-slate-200 px-4 py-3 text-center font-medium text-slate-600">${index + 1}</td>
                     <td class="border border-slate-200 px-4 py-3 whitespace-nowrap text-slate-700">${formatTanggal}</td>
                     <td class="border border-slate-200 px-4 py-3 font-medium text-slate-900">${data.nama || '-'}</td>
-                    <td class="border border-slate-200 px-4 py-3 text-center text-slate-600">${data.jamAwal || '-'}</td>
-                    <td class="border border-slate-200 px-4 py-3 text-center text-slate-600">${data.jamAkhir || '-'}</td>
+                    <td class="border border-slate-200 px-4 py-3 text-center text-slate-600">${bersihJamAwal}</td>
+                    <td class="border border-slate-200 px-4 py-3 text-center text-slate-600">${bersihJamAkhir}</td>
                     <td class="border border-slate-200 px-4 py-3 text-center">${kondisiStyle}</td>
                     <td class="border border-slate-200 px-4 py-3 text-slate-600">${data.keterangan || '-'}</td>
                 `;
