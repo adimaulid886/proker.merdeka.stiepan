@@ -2,115 +2,123 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Portal Program Kerja Merdeka - STIEPAN</title>
-    <!-- Tailwind CSS CDN -->
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Font: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome Icons -->
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            800: '#1e40af',
-                            900: '#1e3a8a',
-                        }
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['"Times New Roman"', 'serif'] },
+                    colors: { brand: { 50: '#eff6ff', 100: '#dbeafe', 600: '#2563eb', 700: '#1d4ed8', 900: '#1e3a8a' } }
                 }
             }
         }
     </script>
     <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        
+        .preview-doc { font-size: 10px !important; }
+        .preview-doc table th, .preview-doc table td { padding: 2px !important; }
+        .col-date-screen { min-width: 16px; text-align: center; }
+        .tanda-rusak { color: #dc2626 !important; font-weight: bold; }
+        .tanda-baik { color: #1e293b !important; font-weight: bold; }
+
         @media print {
-            body * {
-                visibility: hidden;
+            html, body, .flex-1, main, #mainContent, .overflow-y-auto, .overflow-hidden { 
+                background: white !important; margin: 0 !important; padding: 0 !important;
+                height: auto !important; min-height: auto !important;
+                overflow: visible !important; position: static !important;
             }
-            #print-area, #print-area * {
-                visibility: visible;
-            }
+            
+            aside, header, #sidebarOverlay, .no-print { display: none !important; }
+            
             #print-area {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                background: white;
-                padding: 20px;
+                position: static !important; width: 100% !important;
+                max-width: 100% !important; background: white;
+                overflow: visible !important; padding: 0 !important; margin: 0 !important; border: none !important;
             }
-            .no-print {
-                display: none !important;
+            
+            table { 
+                border-collapse: collapse; width: 100% !important; 
+                table-layout: fixed !important; word-wrap: break-word !important;
+                page-break-inside: auto !important; 
             }
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                margin-top: 20px;
+            thead { display: table-header-group !important; }
+            tr { page-break-inside: avoid !important; page-break-after: auto !important; }
+            
+            th.print-genset, td.print-genset {
+                border: 1px solid #000 !important; padding: 4px !important;
+                color: black !important; font-size: 10px !important; vertical-align: middle;
             }
-            th, td {
-                border: 1px solid #333 !important;
-                padding: 8px;
-                color: black !important;
-                font-size: 12px;
-            }
+            th.print-genset { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; text-align: center !important; }
+            
+            .kop-surat h1 { font-size: 13pt !important; margin-bottom: 2px !important; font-family: 'Times New Roman', serif; font-weight: bold; color: black;}
+            .kop-surat h2 { font-size: 11pt !important; margin-bottom: 4px !important; font-family: 'Times New Roman', serif; font-weight: bold; color: black;}
+            .kop-surat p { font-size: 7.5pt !important; margin: 1px 0 !important; font-family: 'Times New Roman', serif; color: black;}
+            .garis-kop { border-top: 3px solid black !important; border-bottom: 1px solid black !important; padding-top: 1px; margin-top: 5px !important; margin-bottom: 10px !important;}
+            .judul-form { font-size: 10pt !important; font-weight: bold; background-color: #fde047 !important; -webkit-print-color-adjust: exact; padding: 4px 10px; border: 1px solid black; display: inline-block; margin-bottom: 10px; color: black;}
+            
+            .info-table td { border: none !important; padding: 2px !important; font-size: 8.5pt !important; font-weight: bold; color: black; vertical-align: top;}
+            
+            .checklist-table th, .checklist-table td { border: 1px solid black !important; vertical-align: middle; }
+            .checklist-table th { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; text-align: center !important; font-size: 7.5pt !important; font-weight: bold; padding: 2px !important; color: black !important;}
+            .checklist-table td { font-size: 6.5pt !important; padding: 2px !important; color: black !important;}
+            
+            .col-no { width: 3%; text-align: center;}
+            .col-komponen { width: 15%; padding-left: 4px !important; font-weight: bold;}
+            .col-date { width: 1.5%; text-align: center; } 
+            .col-aspek { width: 14%; padding-left: 4px !important; font-style: italic;}
+            .col-kondisi { width: 7%; text-align: center; font-weight: bold; }
+            .col-tindak { width: 9.5%; padding-left: 4px !important;}
+            
+            .signature-area { page-break-inside: avoid; font-size: 9pt !important; margin-top: 20px; color: black !important;}
         }
     </style>
 </head>
-<body class="min-h-screen bg-slate-100 text-slate-800 font-sans antialiased flex flex-col md:flex-row">
+<body class="bg-slate-100 text-slate-800 font-sans antialiased flex h-[100dvh] w-full overflow-hidden">
+
+    <!-- Mobile Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
 
     <!-- Sidebar Navigation -->
-    <aside id="sidebar" class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col transition-all duration-300 z-30 shadow-xl flex-shrink-0">
-        <!-- Logo & Brand Header -->
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-[260px] md:w-64 bg-slate-900 text-slate-300 flex flex-col transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 shadow-2xl flex-shrink-0">
         <div class="p-5 border-b border-slate-800 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center">
-                    <i class="fa-solid fa-graduation-cap text-lg"></i>
-                </div>
-                <div>
-                    <h1 class="text-white font-bold text-base leading-tight">STIEPAN</h1>
-                    <p class="text-xs text-slate-400 font-medium">Program Kerja Merdeka</p>
-                </div>
+                <div class="bg-brand-600 text-white p-2.5 rounded-xl shadow-md flex items-center justify-center"><i class="fa-solid fa-graduation-cap text-lg"></i></div>
+                <div><h1 class="text-white font-bold text-base leading-tight">STIEPAN</h1><p class="text-xs text-slate-400 font-medium">Kerja Merdeka</p></div>
             </div>
-            <button id="mobileCloseBtn" class="md:hidden text-slate-400 hover:text-white">
-                <i class="fa-solid fa-xmark text-xl"></i>
-            </button>
+            <button id="mobileCloseBtn" class="md:hidden text-slate-400 hover:text-white p-2 focus:outline-none"><i class="fa-solid fa-xmark text-xl"></i></button>
         </div>
 
-        <!-- Navigation Links -->
         <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
             <p class="px-3 text-[10px] font-semibold tracking-wider text-slate-500 uppercase mb-2">Menu Utama</p>
             <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all bg-brand-600 text-white shadow-lg shadow-brand-600/20">
-                <i class="fa-solid fa-chart-pie w-5 text-center"></i>
-                <span>Dashboard Utama</span>
+                <i class="fa-solid fa-chart-pie w-5 text-center"></i><span>Dashboard Utama</span>
             </button>
             <button onclick="switchTab('genset')" id="nav-genset" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-bolt w-5 text-center"></i>
-                <span>Perawatan Genset</span>
+                <i class="fa-solid fa-bolt w-5 text-center"></i><span>Perawatan Genset</span>
             </button>
-            <button onclick="switchTab('agenda')" id="nav-agenda" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-calendar-check w-5 text-center"></i>
-                <span>Agenda Kampus</span>
+            <button onclick="switchTab('kontrol')" id="nav-kontrol" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
+                <i class="fa-solid fa-clipboard-check w-5 text-center"></i><span>Kontrol Sarpras</span>
             </button>
             <button onclick="switchTab('laporan')" id="nav-laporan" class="tab-btn w-full flex items-center space-x-3 px-3.5 py-3 rounded-xl text-sm font-medium transition-all text-slate-300 hover:bg-slate-800 hover:text-white">
-                <i class="fa-solid fa-file-lines w-5 text-center"></i>
-                <span>Pusat Laporan & Print</span>
+                <i class="fa-solid fa-file-lines w-5 text-center"></i><span>Pusat Laporan & Print</span>
             </button>
         </nav>
 
-        <!-- Sidebar Footer / Info -->
         <div class="p-4 border-t border-slate-800 bg-slate-950/50">
             <div class="flex items-center space-x-3">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-600 to-blue-400 flex items-center justify-center text-white font-bold text-sm shadow-inner">
-                    SP
-                </div>
+                <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-600 to-blue-400 flex items-center justify-center text-white font-bold text-sm">SP</div>
                 <div class="overflow-hidden">
                     <p class="text-xs font-semibold text-white truncate">Administrator STIEPAN</p>
                     <p class="text-[11px] text-slate-400 truncate">Sarana & Prasarana</p>
@@ -119,357 +127,307 @@
         </div>
     </aside>
 
-    <!-- Main Wrapper -->
-    <div class="flex-1 flex flex-col min-w-0">
+    <!-- Main Content Wrapper -->
+    <div class="flex-1 flex flex-col min-w-0 h-full bg-slate-50 relative overflow-hidden">
         
-        <!-- Top Header Bar -->
-        <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between z-20 shadow-sm flex-shrink-0">
-            <div class="flex items-center space-x-4">
-                <button id="mobileToggle" class="md:hidden text-slate-600 hover:text-slate-900 focus:outline-none">
-                    <i class="fa-solid fa-bars text-xl"></i>
-                </button>
+        <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-4 flex items-center justify-between z-20 shadow-sm flex-shrink-0">
+            <div class="flex items-center space-x-3">
+                <button id="mobileToggle" class="md:hidden text-slate-600 hover:text-brand-600 p-1"><i class="fa-solid fa-bars text-xl"></i></button>
                 <div>
-                    <h2 id="pageTitle" class="text-lg md:text-xl font-bold text-slate-900">Dashboard Manajemen Fasilitas</h2>
-                    <p class="text-xs text-slate-500 hidden sm:block">Sekolah Tinggi Ilmu Ekonomi Balikpapan (STIEPAN)</p>
+                    <h2 id="pageTitle" class="text-base md:text-xl font-bold text-slate-900 leading-tight">Dashboard Utama</h2>
+                    <p class="text-[11px] md:text-xs text-slate-500 hidden sm:block">Sekolah Tinggi Ilmu Ekonomi Balikpapan (STIEPAN)</p>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <div class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>Cloud Sync Aktif</span>
-                </div>
+            <div class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-1 rounded-lg text-[10px] md:text-xs font-semibold flex items-center space-x-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span class="hidden md:inline">Cloud Sync Aktif</span><span class="inline md:hidden">Online</span>
             </div>
         </header>
 
-        <!-- Main Scrollable Content Area -->
-        <main class="flex-1 p-4 md:p-8 bg-slate-50/70">
+        <main class="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 pb-24" id="mainContent">
 
             <!-- TAB 1: DASHBOARD -->
-            <div id="tab-content-dashboard" class="tab-pane space-y-6">
+            <div id="tab-content-dashboard" class="tab-pane space-y-5 md:space-y-6">
                 <!-- Welcome Banner -->
-                <div class="bg-gradient-to-r from-brand-900 via-brand-800 to-blue-700 rounded-2xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-900 via-brand-800 to-blue-700 rounded-2xl p-5 md:p-8 text-white shadow-xl relative overflow-hidden">
                     <div class="absolute right-0 top-0 translate-x-8 -translate-y-8 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 max-w-2xl">
-                        <span class="bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-3 inline-block">Program Kerja Merdeka</span>
-                        <h3 class="text-2xl md:text-3xl font-bold mb-2">Portal Manajemen & Pemeliharaan Fasilitas STIEPAN</h3>
-                        <p class="text-blue-100 text-sm md:text-base leading-relaxed">
-                            Sistem terpadu pengawasan sarana, prasarana, serta pemeliharaan unit genset kampus secara real-time demi kenyamanan operasional akademik Sekolah Tinggi Ilmu Ekonomi Balikpapan.
-                        </p>
-                        <div class="mt-6 flex flex-wrap gap-3">
-                            <button onclick="switchTab('genset')" class="bg-white text-brand-900 font-semibold px-5 py-2.5 rounded-xl shadow hover:bg-blue-50 transition text-sm flex items-center space-x-2">
-                                <i class="fa-solid fa-bolt text-brand-600"></i>
-                                <span>Kelola Perawatan Genset</span>
-                            </button>
-                            <button onclick="switchTab('laporan')" class="bg-brand-700/80 hover:bg-brand-700 text-white font-semibold px-5 py-2.5 rounded-xl border border-white/20 transition text-sm flex items-center space-x-2">
-                                <i class="fa-solid fa-print"></i>
-                                <span>Cetak Laporan Rekapan</span>
-                            </button>
-                        </div>
+                        <span class="bg-white/20 text-white text-[10px] md:text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider mb-2 inline-block">Program Kerja Merdeka</span>
+                        <h3 class="text-xl md:text-2xl font-bold mb-1">Portal Manajemen & Pemeliharaan Fasilitas</h3>
+                        <p class="text-blue-100 text-xs md:text-sm leading-relaxed">Sistem terpadu pengawasan sarana, prasarana, serta pemeliharaan unit genset kampus STIEPAN secara real-time.</p>
                     </div>
                 </div>
 
-                <!-- Statistics Metrics Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Pengecekan</p>
-                            <h4 id="statTotal" class="text-2xl font-bold text-slate-900 mt-1">0</h4>
-                            <p class="text-[11px] text-slate-400 mt-1"><span class="text-brand-600 font-medium">Record tersimpan</span> di cloud</p>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-brand-600 flex items-center justify-center text-xl shadow-xs">
-                            <i class="fa-solid fa-clipboard-list"></i>
-                        </div>
+                <!-- 4 Kotak Indikator -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                    <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Genset Normal</p><h4 id="statGensetNormal" class="text-xl md:text-2xl font-bold text-slate-900 mt-1">0</h4></div>
+                        <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-blue-50 text-brand-600 flex items-center justify-center text-sm md:text-xl"><i class="fa-solid fa-bolt"></i></div>
                     </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kondisi Normal</p>
-                            <h4 id="statNormal" class="text-2xl font-bold text-emerald-600 mt-1">0</h4>
-                            <p class="text-[11px] text-slate-400 mt-1">Operasional berjalan lancar</p>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shadow-xs">
-                            <i class="fa-solid fa-circle-check"></i>
-                        </div>
+                    <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Genset Masalah</p><h4 id="statGensetRusak" class="text-xl md:text-2xl font-bold text-rose-600 mt-1">0</h4></div>
+                        <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-sm md:text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Bermasalah / Perbaikan</p>
-                            <h4 id="statBermasalah" class="text-2xl font-bold text-rose-600 mt-1">0</h4>
-                            <p class="text-[11px] text-slate-400 mt-1">Butuh perhatian teknis</p>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl shadow-xs">
-                            <i class="fa-solid fa-triangle-exclamation"></i>
-                        </div>
+                    <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Sarpras Normal</p><h4 id="statSarprasNormal" class="text-xl md:text-2xl font-bold text-emerald-600 mt-1">13</h4></div>
+                        <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm md:text-xl"><i class="fa-solid fa-circle-check"></i></div>
                     </div>
-
-                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Status Kampus</p>
-                            <h4 class="text-lg font-bold text-slate-900 mt-1">STIEPAN</h4>
-                            <p class="text-[11px] text-slate-400 mt-1">Balikpapan, Kaltim</p>
-                        </div>
-                        <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shadow-xs">
-                            <i class="fa-solid fa-building-columns"></i>
-                        </div>
+                    <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+                        <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Sarpras Masalah</p><h4 id="statSarprasRusak" class="text-xl md:text-2xl font-bold text-rose-600 mt-1">0</h4></div>
+                        <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-sm md:text-xl"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                     </div>
                 </div>
 
-                <!-- Recent Activities / Quick Summary Section -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-                        <div class="flex items-center justify-between mb-4">
-                            <h4 class="font-bold text-slate-900 text-base">Aktivitas & Catatan Pemeliharaan Terbaru</h4>
-                            <button onclick="switchTab('genset')" class="text-xs text-brand-600 hover:text-brand-700 font-semibold">Lihat Semua &rarr;</button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse">
-                                <thead>
-                                    <tr class="border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase">
-                                        <th class="pb-3">Tanggal</th>
-                                        <th class="pb-3">Petugas</th>
-                                        <th class="pb-3">Kondisi</th>
-                                        <th class="pb-3">Keterangan</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="dashboardTableBody" class="text-sm divide-y divide-slate-100">
-                                    <tr><td colspan="4" class="text-center py-4 text-slate-400 italic">Memuat data...</td></tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <!-- Grafik & Log Kerusakan -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
+                    <div class="bg-white rounded-2xl p-4 md:p-6 border border-slate-200 shadow-sm flex flex-col justify-between items-center">
+                        <div class="w-full text-left mb-4"><h4 class="font-bold text-slate-900 text-sm md:text-base">Kondisi Fasilitas Keseluruhan</h4><p class="text-xs text-slate-500">Rekapitulasi Genset & Sarana Prasarana</p></div>
+                        <div class="relative w-full h-48 flex items-center justify-center"><canvas id="kondisiChart"></canvas></div>
                     </div>
-
-                    <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col justify-between">
-                        <div>
-                            <h4 class="font-bold text-slate-900 text-base mb-3">Informasi Program Kerja</h4>
-                            <div class="space-y-3 text-xs text-slate-600">
-                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-shield-halved text-brand-600 mr-1.5"></i> Bidang Sarana & Prasarana</p>
-                                    <p>Pengecekan genset rutin dilakukan setiap hari kerja guna mengantisipasi kestabilan kelistrikan kampus STIEPAN.</p>
-                                </div>
-                                <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                    <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-cloud text-emerald-600 mr-1.5"></i> Sinkronisasi Cloud</p>
-                                    <p>Data tersimpan terpusat di Google Sheets sehingga dapat diakses bersama secara real-time.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-6 pt-4 border-t border-slate-100 text-center">
-                            <p class="text-[11px] text-slate-400">STIEPAN Kampus Unggul & Profesional</p>
+                    <div class="bg-white rounded-2xl p-4 md:p-6 border border-slate-200 shadow-sm">
+                        <div class="w-full text-left mb-4"><h4 class="font-bold text-slate-900 text-sm md:text-base">Catatan Kerusakan Sarpras (Bulan Ini)</h4></div>
+                        <div class="overflow-y-auto max-h-48 w-full border border-slate-100 rounded-xl" id="recentSarprasLog">
+                            <p class="text-center text-sm text-slate-400 py-6 italic">Tidak ada fasilitas rusak tercatat.</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <!-- TAB 2: PERAWATAN GENSET -->
-            <div id="tab-content-genset" class="tab-pane hidden space-y-6">
-                
-                <!-- Header Keterangan Modul -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div id="tab-content-genset" class="tab-pane hidden space-y-5 md:space-y-6">
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 no-print">
                     <div>
-                        <span class="bg-blue-100 text-brand-800 text-xs font-semibold px-2.5 py-1 rounded-full">Modul Operasional</span>
-                        <h3 class="text-xl font-bold text-slate-900 mt-2">Form & Rekapan Perawatan Genset STIEPAN</h3>
-                        <p class="text-slate-500 text-xs md:text-sm">Input data pengecekan, pantau jam operasional, dan kelola histori pemeliharaan.</p>
+                        <span class="bg-blue-100 text-brand-800 text-[10px] md:text-xs font-semibold px-2.5 py-1 rounded-full">Modul Operasional</span>
+                        <h3 class="text-lg md:text-xl font-bold text-slate-900 mt-2">Perawatan Genset</h3>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <button onclick="window.print()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs md:text-sm px-4 py-2.5 rounded-xl transition shadow-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-print"></i>
-                            <span>Print Laporan</span>
-                        </button>
-                        <button onclick="muatData()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs md:text-sm px-4 py-2.5 rounded-xl transition shadow-sm flex items-center space-x-2">
-                            <i class="fa-solid fa-rotate"></i>
-                            <span>Refresh Data</span>
-                        </button>
-                    </div>
+                    <button onclick="doPrint('genset')" class="w-full md:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2.5 rounded-xl transition shadow-sm flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-print"></i> <span>Print Portrait</span>
+                    </button>
                 </div>
-
-                <!-- Form Input Grid -->
-                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
-                    <h4 class="text-base font-bold text-slate-900 mb-4 flex items-center">
-                        <i class="fa-solid fa-pen-to-square text-brand-600 mr-2"></i> Form Input Data Pengecekan Baru
-                    </h4>
-                    <form id="gensetForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Tanggal</label>
-                            <input type="date" id="tanggal" required class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Nama Petugas</label>
-                            <input type="text" id="nama" required placeholder="Masukkan nama petugas" class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Jam Awal</label>
-                            <input type="time" id="jamAwal" required class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600">
-                        </div>
-
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Jam Akhir</label>
-                            <input type="time" id="jamAkhir" required class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600">
-                        </div>
-
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Kondisi Genset</label>
-                            <select id="kondisi" required class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600 bg-white">
-                                <option value="Normal">Normal</option>
-                                <option value="Bermasalah">Bermasalah</option>
-                            </select>
-                        </div>
-
-                        <div id="keteranganContainer" class="md:col-span-2 hidden">
-                            <label class="block text-xs font-semibold text-slate-700 uppercase mb-1">Keterangan Masalah</label>
-                            <textarea id="keterangan" rows="3" placeholder="Jelaskan kendala atau perbaikan yang diperlukan pada genset..." class="w-full border border-slate-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-600 focus:ring-1 focus:ring-brand-600"></textarea>
-                        </div>
-
-                        <div class="md:col-span-2 pt-2">
-                            <button type="submit" id="submitBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-6 rounded-xl transition duration-200 shadow-lg shadow-brand-600/20 text-sm flex items-center justify-center space-x-2">
-                                <i class="fa-solid fa-floppy-disk"></i>
-                                <span>Simpan Data ke Cloud</span>
-                            </button>
-                        </div>
+                
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm no-print">
+                    <form id="gensetForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div><label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal</label><input type="date" id="tanggal" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
+                        <div><label class="block text-xs font-semibold text-slate-700 mb-1">Petugas</label><input type="text" id="nama" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
+                        <div><label class="block text-xs font-semibold text-slate-700 mb-1">Jam Awal</label><input type="time" id="jamAwal" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
+                        <div><label class="block text-xs font-semibold text-slate-700 mb-1">Jam Akhir</label><input type="time" id="jamAkhir" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
+                        <div class="sm:col-span-2"><label class="block text-xs font-semibold text-slate-700 mb-1">Kondisi</label><select id="kondisi" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"><option value="Normal">Normal</option><option value="Bermasalah">Bermasalah</option></select></div>
+                        <div id="keteranganContainer" class="sm:col-span-2 hidden"><label class="block text-xs font-semibold text-slate-700 mb-1">Keterangan</label><textarea id="keterangan" rows="2" class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></textarea></div>
+                        <div class="sm:col-span-2 pt-2"><button type="submit" id="submitBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-6 rounded-xl transition text-sm">Simpan Data Genset</button></div>
                     </form>
                 </div>
 
-                <!-- Tabel & Search Toolbar -->
-                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <h4 class="text-base font-bold text-slate-900">Rekapan Perawatan Genset STIEPAN</h4>
-                        <!-- Real-time search filter -->
-                        <div class="relative w-full md:w-72">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
-                                <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                            </span>
-                            <input type="text" id="searchInput" oninput="filterTableData()" placeholder="Cari nama petugas / kondisi..." class="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-xl text-xs focus:outline-none focus:border-brand-600">
-                        </div>
+                <div id="print-area-genset" class="print-area w-full bg-white p-4 md:p-6 rounded-2xl border border-slate-200">
+                    <div class="hidden print:block text-center mb-6">
+                        <h1 style="font-size: 20px; font-weight: bold; margin-bottom: 4px;">LAPORAN PERAWATAN GENSET & DOKUMENTASI</h1>
+                        <h2 style="font-size: 16px; font-weight: bold;">SEKOLAH TINGGI ILMU EKONOMI BALIKPAPAN (STIEPAN)</h2>
+                        <hr style="border: 1px solid black; margin-top: 10px; margin-bottom: 15px;">
                     </div>
-
-                    <!-- Area Print & Tabel -->
-                    <div id="print-area" class="overflow-x-auto">
-                        <!-- Header khusus print -->
-                        <div class="hidden print:block text-center mb-6">
-                            <h1 style="font-size: 22px; font-weight: bold; margin-bottom: 4px;">LAPORAN PERAWATAN GENSET</h1>
-                            <h2 style="font-size: 18px; font-weight: bold;">SEKOLAH TINGGI ILMU EKONOMI BALIKPAPAN (STIEPAN)</h2>
-                            <hr style="border: 1px solid black; margin-top: 10px; margin-bottom: 20px;">
-                        </div>
-
-                        <table class="w-full table-auto border-collapse text-left">
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-auto border-collapse text-left min-w-[700px] print:min-w-0">
                             <thead>
                                 <tr class="bg-slate-100 text-slate-700 text-xs font-semibold uppercase">
-                                    <th class="border border-slate-200 px-4 py-3 text-center w-12">No</th>
-                                    <th class="border border-slate-200 px-4 py-3">Tanggal</th>
-                                    <th class="border border-slate-200 px-4 py-3">Nama Petugas</th>
-                                    <th class="border border-slate-200 px-4 py-3 text-center">Jam Awal</th>
-                                    <th class="border border-slate-200 px-4 py-3 text-center">Jam Akhir</th>
-                                    <th class="border border-slate-200 px-4 py-3 text-center">Kondisi</th>
-                                    <th class="border border-slate-200 px-4 py-3">Keterangan</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2 w-10 text-center">No</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2 w-24 text-center">Tgl</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2">Nama</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2 text-center">Kondisi</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2">Keterangan</th>
                                 </tr>
                             </thead>
-                            <tbody id="tableBody" class="text-sm divide-y divide-slate-200">
-                                <tr>
-                                    <td colspan="7" class="text-center py-6 text-slate-400 italic">Memuat data...</td>
-                                </tr>
+                            <tbody id="tableBody" class="text-xs divide-y divide-slate-200">
+                                <tr><td colspan="5" class="text-center py-6 text-slate-400 italic">Data dimuat dari cloud...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
             </div>
 
-            <!-- TAB 3: AGENDA KAMPUS -->
-            <div id="tab-content-agenda" class="tab-pane hidden space-y-6">
-                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="max-w-2xl">
-                        <span class="bg-indigo-100 text-indigo-800 text-xs font-semibold px-2.5 py-1 rounded-full">Program Kerja Merdeka</span>
-                        <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2">Jadwal & Agenda Pemeliharaan Fasilitas STIEPAN</h3>
-                        <p class="text-slate-500 text-sm mb-6">Agenda berkala pemeliharaan sarana prasarana penunjang perkuliahan dan operasional kampus.</p>
+            <!-- TAB 3: KONTROL SARPRAS & JURNAL HARIAN -->
+            <div id="tab-content-kontrol" class="tab-pane hidden space-y-5 md:space-y-6">
+                
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4 no-print">
+                    <div>
+                        <span class="bg-amber-100 text-amber-800 text-[10px] md:text-xs font-semibold px-2.5 py-1 rounded-full">Modul Uptime Bulanan</span>
+                        <h3 class="text-lg md:text-xl font-bold text-slate-900 mt-2">Form Kontrol Harian Sarpras</h3>
+                        <p class="text-xs text-slate-500 mt-1">Kolom kondisi menghitung persentase keandalan operasional fasilitas selama sebulan penuh.</p>
+                    </div>
+                    <button onclick="doPrint('kontrol')" class="w-full md:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/30 flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-print"></i> <span>Print Matriks (Landscape)</span>
+                    </button>
+                </div>
+
+                <!-- Input Setup & Harian -->
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm no-print space-y-6">
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-3"><i class="fa-solid fa-sliders text-brand-600 mr-2"></i> Pengaturan Kop Laporan</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Area / Gedung</label>
+                                <input type="text" id="inGedung" value="Gedung A, B, C, dan Ballroom serta Auditorium" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:border-brand-600" oninput="syncText('lblGedung', this.value)">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Waktu Kontrol</label>
+                                <input type="text" id="inWaktu" value="Setiap Pukul 20.00 Wita" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:border-brand-600" oninput="syncText('lblWaktu', this.value)">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Petugas Pemeriksa</label>
+                                <input type="text" id="inPetugas" value="Wandi / Parimin" class="w-full border border-slate-300 rounded-xl px-3 py-2 text-xs focus:border-brand-600" oninput="syncText('lblPetugas', this.value)">
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="space-y-4">
-                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-start space-x-4">
-                            <div class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center font-bold flex-shrink-0 text-sm">
-                                SEN
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <h4 class="font-bold text-slate-900 text-sm">Inspeksi Kelistrikan & Genset Rutin</h4>
-                                    <span class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-semibold">Mingguan</span>
-                                </div>
-                                <p class="text-xs text-slate-600 mt-1">Pengecekan bahan bakar, oli, tes starter, dan pembersihan filter genset utama kampus.</p>
-                                <p class="text-[11px] text-slate-400 mt-2"><i class="fa-regular fa-clock mr-1"></i> Setiap Senin, Pukul 08:00 WITA</p>
-                            </div>
-                        </div>
+                    <hr class="border-slate-100">
 
-                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-start space-x-4">
-                            <div class="w-12 h-12 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold flex-shrink-0 text-sm">
-                                RAB
+                    <div>
+                        <h4 class="font-bold text-slate-800 text-sm mb-3"><i class="fa-solid fa-keyboard text-brand-600 mr-2"></i> Input Temuan / Kondisi Harian</h4>
+                        <form id="sarprasForm" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Tanggal Pemeriksaan</label>
+                                <input type="date" id="sTgl" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600">
                             </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <h4 class="font-bold text-slate-900 text-sm">Pemeliharaan Ruang Kuliah & AC</h4>
-                                    <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-semibold">Bulanan</span>
-                                </div>
-                                <p class="text-xs text-slate-600 mt-1">Pemeriksaan fasilitas pendingin ruangan, kebersihan kelas, serta proyektor multimedia.</p>
-                                <p class="text-[11px] text-slate-400 mt-2"><i class="fa-regular fa-clock mr-1"></i> Minggu ke-2 Setiap Bulan</p>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Kategori / Komponen</label>
+                                <select id="sKategori" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600" onchange="updateSubItem()"></select>
                             </div>
-                        </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Aspek Yang Diperiksa</label>
+                                <select id="sItem" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Kondisi Alat/Fasilitas</label>
+                                <select id="sKondisi" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600 bg-white">
+                                    <option value="Baik">Normal / Baik</option>
+                                    <option value="Rusak">Bermasalah / Rusak</option>
+                                </select>
+                            </div>
+                            <div class="lg:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-700 mb-1">Keterangan / Tindak Lanjut Khusus</label>
+                                <input type="text" id="sKeterangan" placeholder="Isi detail kerusakan atau catatan perbaikan..." class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm focus:border-brand-600">
+                            </div>
+                            <div class="lg:col-span-3 pt-2">
+                                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 px-6 rounded-xl transition shadow-md text-sm flex items-center justify-center space-x-2">
+                                    <i class="fa-solid fa-plus"></i> <span>Tambahkan ke Jurnal & Update Preview</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
 
-                        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-start space-x-4">
-                            <div class="w-12 h-12 rounded-xl bg-amber-600 text-white flex items-center justify-center font-bold flex-shrink-0 text-sm">
-                                JUM
-                            </div>
-                            <div class="flex-1">
-                                <div class="flex items-center justify-between">
-                                    <h4 class="font-bold text-slate-900 text-sm">Audit Sarana Prasarana Kampus</h4>
-                                    <span class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-semibold">Semester</span>
-                                </div>
-                                <p class="text-xs text-slate-600 mt-1">Evaluasi menyeluruh kondisi inventaris kampus STIEPAN untuk laporan rekapitulasi Program Kerja Merdeka.</p>
-                                <p class="text-[11px] text-slate-400 mt-2"><i class="fa-regular fa-clock mr-1"></i> Akhir Semester Akademik</p>
-                            </div>
+                    <!-- TABEL JURNAL HARIAN DETAIL -->
+                    <div class="pt-4 border-t border-slate-100">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-book-open text-brand-600 mr-2"></i> Jurnal Log Harian Detail</h4>
+                            <span class="text-[11px] text-slate-400">Daftar riwayat input temuan operasional</span>
+                        </div>
+                        <div class="overflow-x-auto max-h-56 border rounded-xl">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-slate-100 text-slate-700 sticky top-0">
+                                    <tr>
+                                        <th class="p-2.5">Tanggal</th>
+                                        <th class="p-2.5">Kategori & Komponen</th>
+                                        <th class="p-2.5 text-center">Kondisi</th>
+                                        <th class="p-2.5">Keterangan / Tindak Lanjut</th>
+                                        <th class="p-2.5 text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="jurnalTableBody" class="divide-y divide-slate-100">
+                                    <tr><td colspan="5" class="text-center py-4 text-slate-400 italic">Belum ada jurnal harian diinput.</td></tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- TAB 4: LAPORAN & EKSPOR -->
-            <div id="tab-content-laporan" class="tab-pane hidden space-y-6">
-                <div class="bg-white p-6 md:p-8 rounded-2xl border border-slate-200 shadow-sm">
-                    <div class="max-w-2xl mb-6">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs font-semibold px-2.5 py-1 rounded-full">Pusat Dokumen</span>
-                        <h3 class="text-xl font-bold text-slate-900 mt-2 mb-2">Cetak & Ekspor Laporan Resmi STIEPAN</h3>
-                        <p class="text-slate-500 text-sm">Gunakan fitur cetak langsung untuk menghasilkan dokumen rekapitulasi formal siap tanda tangan.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
-                            <div>
-                                <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xl mb-4">
-                                    <i class="fa-solid fa-print"></i>
-                                </div>
-                                <h4 class="font-bold text-slate-900 text-base mb-2">Cetak Laporan Perawatan Genset</h4>
-                                <p class="text-xs text-slate-600 leading-relaxed">Mencetak format tabel laporan lengkap dengan kop resmi STIEPAN dan tanda tangan penanggung jawab sarana prasarana.</p>
+                <!-- PREVIEW & CETAK FORM KONTROL (Responsive 100% Zoom) -->
+                <div class="bg-white p-2 md:p-4 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto">
+                    <div class="text-xs text-slate-500 mb-2 italic no-print"><i class="fa-solid fa-eye"></i> Live Preview: Tampilan Kertas Saat Dicetak (Landscape A4)</div>
+                    
+                    <div id="print-area-kontrol" class="print-area preview-doc w-full min-w-[800px] print:min-w-0 bg-white mx-auto border border-slate-100 print:border-none p-2 print:p-0">
+                        
+                        <!-- KOP SURAT -->
+                        <div class="kop-surat flex items-center justify-between px-2 pt-2">
+                            <div class="w-16 md:w-20 text-center border-2 border-slate-800 rounded-full h-16 md:h-20 flex items-center justify-center p-1 md:p-2 font-bold font-serif leading-tight text-[8px] md:text-[10px]">
+                                SEKOLAH TINGGI<br>ILMU EKONOMI<br>BALIKPAPAN
                             </div>
-                            <div class="mt-6">
-                                <button onclick="switchTab('genset'); setTimeout(() => window.print(), 300);" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition shadow-sm flex items-center justify-center space-x-2">
-                                    <i class="fa-solid fa-print"></i>
-                                    <span>Buka & Cetak Laporan Genset</span>
-                                </button>
+                            <div class="flex-1 text-center font-serif leading-tight">
+                                <h1>YAYASAN PENDIDIKAN 17 AGUSTUS 1945 BALIKPAPAN</h1>
+                                <h2>SEKOLAH TINGGI ILMU EKONOMI BALIKPAPAN<br>(S.T.I.E. BALIKPAPAN)</h2>
+                                <p>TERAKREDITASI BAN-PT NO. 276/SK/BAN-PT/AK.S/2.0/PT/VI/2026</p>
+                                <p>KEMENTERIAN PENDIDIKAN TINGGI, SAINS DAN TEKNOLOGI</p>
+                                <p>MANAJEMEN : NO. 11771/SK/BAN-PT/AK-PPJ/S/X/2021</p>
+                                <p>AKUNTANSI : NO. 1382/DE/A.5/L.A/MEMBA-S/VII/2026</p>
+                                <p class="mt-1">KAMPUS : JLN. MAYOR POL. ZAINAL ARIFIN NO.166 RT.48 SUMBER REJO BALIKPAPAN TENGAH TLP 0542 8500850</p>
+                            </div>
+                            <div class="w-16 md:w-20"></div>
+                        </div>
+                        
+                        <div class="garis-kop"></div>
+                        
+                        <div class="text-center">
+                            <div class="judul-form tracking-wide text-xs md:text-sm">FORM CHECKLIST DAN KONTROL HARIAN - TENAGA PEMELIHARAAN SARPRAS</div>
+                        </div>
+
+                        <table class="info-table mb-2 md:mb-3 ml-2 text-[9px] md:text-[11px]">
+                            <tr><td class="w-24 md:w-32">Area / Gedung</td><td class="w-4">:</td><td id="lblGedung">Gedung A, B, C, dan Ballroom serta Auditorium</td></tr>
+                            <tr><td>Bulan - Tahun</td><td>:</td><td id="lblBulanTahun">Oktober-2026</td></tr>
+                            <tr><td>Waktu Kontrol</td><td>:</td><td id="lblWaktu">Setiap Pukul 20.00 Wita</td></tr>
+                            <tr><td>Petugas Pemeriksa</td><td>:</td><td id="lblPetugas">Wandi / Parimin</td></tr>
+                        </table>
+
+                        <!-- TABEL UTAMA -->
+                        <table class="checklist-table w-full border-collapse text-left text-[8px] md:text-[10px]">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="col-no w-6 md:w-8">No</th>
+                                    <th rowspan="2" class="col-komponen w-24 md:w-32">Komponen Sarpras</th>
+                                    <th colspan="31" class="text-center">Tanggal</th>
+                                    <th rowspan="2" class="col-aspek w-32 md:w-48">Aspek Yang Diperiksa</th>
+                                    <th rowspan="2" class="col-kondisi w-12 md:w-16">Kondisi (Uptime)</th>
+                                    <th rowspan="2" class="col-tindak w-20 md:w-28">Tindak Lanjut Kepala BAU</th>
+                                </tr>
+                                <tr id="kontrolTableDates">
+                                    <!-- Diisi via JS -->
+                                </tr>
+                            </thead>
+                            <tbody id="kontrolTableBody">
+                                <!-- Render Otomatis via JS -->
+                            </tbody>
+                        </table>
+                        
+                        <!-- TANDA TANGAN -->
+                        <div class="signature-area w-full flex justify-end pr-10 mt-6 pb-6 text-[9px] md:text-xs">
+                            <div class="text-center font-serif">
+                                <p id="sigDate" class="mb-1">Balikpapan, 19 Oktober 2026</p>
+                                <p>Laporan Disetujui oleh:</p>
+                                <p class="mb-12 md:mb-16">Wakil Ketua II Bidang Administrasi Umum & Keuangan,</p>
+                                <p class="font-bold underline">Rudy Pudjut Harianto, S.E., M.Si.</p>
+                                <p>NIDN. 1122116801</p>
                             </div>
                         </div>
 
-                        <div class="p-6 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- TAB 4: PUSAT LAPORAN -->
+            <div id="tab-content-laporan" class="tab-pane hidden space-y-6">
+                <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-4">Pusat Laporan Ekspor</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
                             <div>
-                                <div class="w-12 h-12 rounded-xl bg-brand-600 text-white flex items-center justify-center text-xl mb-4">
-                                    <i class="fa-solid fa-chart-pie"></i>
-                                </div>
-                                <h4 class="font-bold text-slate-900 text-base mb-2">Ringkasan Statistik Program Kerja</h4>
-                                <p class="text-xs text-slate-600 leading-relaxed">Menampilkan rekapitulasi total pengecekan dan persentase kesiapan fasilitas penunjang kampus STIEPAN.</p>
+                                <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-print"></i></div>
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">Laporan Genset (Portrait)</h4>
+                                <p class="text-[11px] text-slate-600">Dokumen rekapitulasi data perbaikan (Format Kertas Berdiri).</p>
                             </div>
-                            <div class="mt-6">
-                                <button onclick="switchTab('dashboard')" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition shadow-sm flex items-center justify-center space-x-2">
-                                    <i class="fa-solid fa-chart-pie"></i>
-                                    <span>Lihat Dashboard Ringkasan</span>
-                                </button>
+                            <button onclick="switchTab('genset'); setTimeout(() => doPrint('genset'), 300);" class="mt-4 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition">Buka & Cetak Genset</button>
+                        </div>
+                        <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col justify-between">
+                            <div>
+                                <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg mb-3"><i class="fa-solid fa-table-list"></i></div>
+                                <h4 class="font-bold text-slate-900 text-sm mb-1">Form Kontrol Sarpras (Landscape)</h4>
+                                <p class="text-[11px] text-slate-600">Formulir cerdas matriks tanggal ter-update otomatis (Kertas Mendatar).</p>
                             </div>
+                            <button onclick="switchTab('kontrol'); setTimeout(() => doPrint('kontrol'), 300);" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition">Buka & Cetak Kontrol</button>
                         </div>
                     </div>
                 </div>
@@ -478,319 +436,340 @@
         </main>
     </div>
 
-    <!-- Toast Notification Banner -->
-    <div id="toastNotification" class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-2xl z-50 transform translate-y-20 opacity-0 transition-all duration-300 flex items-center space-x-3 text-sm">
+    <script>
+        const printStyle = document.createElement('style');
+        document.head.appendChild(printStyle);
+        
+        function doPrint(type) {
+            document.querySelectorAll('.print-area').forEach(el => el.removeAttribute('id'));
+            
+            if (type === 'kontrol') {
+                printStyle.innerHTML = '@page { size: A4 landscape; margin: 10mm 12mm; }';
+                document.querySelector('#tab-content-kontrol .print-area').setAttribute('id', 'print-area');
+            } else if (type === 'genset') {
+                printStyle.innerHTML = '@page { size: A4 portrait; margin: 15mm; }';
+                document.querySelector('#tab-content-genset .print-area').setAttribute('id', 'print-area');
+            }
+            window.print();
+        }
+    </script>
+
+    <!-- TOAST NOTIFIKASI -->
+    <div id="toastNotification" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 bg-slate-900 text-white px-4 md:px-5 py-3 rounded-xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center space-x-3 text-xs md:text-sm">
         <span id="toastIcon" class="text-emerald-400 text-base"><i class="fa-solid fa-circle-check"></i></span>
-        <span id="toastMessage">Pemberitahuan sistem...</span>
+        <span id="toastMessage">Pemberitahuan...</span>
     </div>
 
-    <!-- JavaScript Implementation -->
+    <!-- LOGIC APLIKASI -->
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw4VPNIJHQdluEMftg5eTuQk9eRMuG_2HRKMcCBSe8QBpDwu6RNxdifbVWyPCWfTWlinQ/exec";
 
-        const form = document.getElementById('gensetForm');
-        const kondisiSelect = document.getElementById('kondisi');
-        const keteranganContainer = document.getElementById('keteranganContainer');
-        const keteranganInput = document.getElementById('keterangan');
-        const tableBody = document.getElementById('tableBody');
-        const dashboardTableBody = document.getElementById('dashboardTableBody');
-        const searchInput = document.getElementById('searchInput');
-        const submitBtn = document.getElementById('submitBtn');
+        let statusChartInstance = null; 
+        
+        const masterSarpras = {
+            "A. Struktur & Area Gedung": [
+                { id: "a1", name: "Dinding & Cat", desc: "Apakah ada keretakan struktur atau cat terkelupas?" },
+                { id: "a2", name: "Plafon / Langit-langit", desc: "Apakah ada bekas bocor air atau bagian yang melar?" },
+                { id: "a3", name: "Pintu, Jendela & Kunci", desc: "Apakah engsel, slot, dan kunci berfungsi lancar?" },
+                { id: "a4", name: "Lantai / Keramik", desc: "Apakah ada keramik yang pecah atau amblas?" }
+            ],
+            "B. Meubelair dan Fasilitas Ruang:": [
+                { id: "b1", name: "Meja & Kursi Kerja", desc: "Apakah konstruksinya kokoh dan tidak goyang?" },
+                { id: "b2", name: "Lemari / Rak Arsip", desc: "Apakah pintu lemari dan laci berfungsi normal?" }
+            ],
+            "C. Instalasi Listrik dan Elektronik:": [
+                { id: "c1", name: "Lampu Penerangan", desc: "Apakah semua lampu menyala terang (tidak berkedip)?" },
+                { id: "c2", name: "Sakelar & Stop Kontak", desc: "Apakah terpasang kuat dan berfungsi mengalirkan daya?" },
+                { id: "c3", name: "AC (Air Conditioner)", desc: "Apakah suhu dingin normal dan tidak bocor air?" }
+            ],
+            "D. Utilitas Air dan Sanitasi:": [
+                { id: "d1", name: "Kran dan Pipa Air", desc: "Apakah debit air lancar dan bebas dari kebocoran?" },
+                { id: "d2", name: "Kloset & Urinal", desc: "Apakah sistem flushing (siram) berfungsi baik?" },
+                { id: "d3", name: "Saluran Pembuangan", desc: "Apakah air mengalir lancar (tidak tersumbat)?" }
+            ],
+            "E. Fasilitas Keselamatan:": [
+                { id: "e1", name: "Pemadam Api (APAR)", desc: "Apakah tekanan jarum di zona hijau & belum kedaluwarsa?" },
+                { id: "e2", name: "Lampu Darurat", desc: "Apakah baterai dan lampu menyala saat dites?" }
+            ]
+        };
 
-        let dataPerawatan = [];
+        let dbSarpras = JSON.parse(localStorage.getItem('dbSarprasStiepan')) || [];
+        let dbGenset = [];
 
-        // Fungsi Helper untuk membersihkan format jam agar hanya tampil HH:mm
-        function formatJam(val) {
-            if (!val) return '-';
-            let str = String(val);
-            // Ekstraksi pola jam HH:MM menggunakan Regex dari string tanggal apa pun
-            let match = str.match(/(\d{2}):(\d{2})/);
-            if (match) {
-                return match[1] + ':' + match[2];
+        function initFormSarpras() {
+            const catSelect = document.getElementById('sKategori');
+            catSelect.innerHTML = '';
+            for(let cat in masterSarpras) {
+                catSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
             }
-            return str;
+            document.getElementById('sTgl').value = new Date().toISOString().split('T')[0];
+            updateSubItem();
+            renderMatrixSarpras();
         }
 
-        // Tab Navigation Logic
+        function updateSubItem() {
+            const cat = document.getElementById('sKategori').value;
+            const itemSelect = document.getElementById('sItem');
+            itemSelect.innerHTML = '';
+            masterSarpras[cat].forEach(item => {
+                itemSelect.innerHTML += `<option value="${item.id}">${item.name} - ${item.desc}</option>`;
+            });
+        }
+
+        document.getElementById('sarprasForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const date = document.getElementById('sTgl').value;
+            const cat = document.getElementById('sKategori').value;
+            const item = document.getElementById('sItem').value;
+            const kondisi = document.getElementById('sKondisi').value;
+            const ket = document.getElementById('sKeterangan').value;
+            
+            let itemName = "";
+            for(let c in masterSarpras) {
+                let found = masterSarpras[c].find(x => x.id === item);
+                if(found) itemName = found.name;
+            }
+
+            dbSarpras = dbSarpras.filter(d => !(d.date === date && d.item === item));
+            dbSarpras.push({ id: Date.now(), date, cat, item, itemName, kondisi, ket });
+            localStorage.setItem('dbSarprasStiepan', JSON.stringify(dbSarpras));
+            
+            showToast(`Jurnal komponen "${itemName}" berhasil ditambahkan!`, 'success');
+            document.getElementById('sKeterangan').value = ''; 
+            
+            renderMatrixSarpras();
+        });
+
+        window.hapusJurnal = function(id) {
+            dbSarpras = dbSarpras.filter(d => d.id !== id);
+            localStorage.setItem('dbSarprasStiepan', JSON.stringify(dbSarpras));
+            showToast('Jurnal berhasil dihapus.', 'success');
+            renderMatrixSarpras();
+        };
+
+        function renderMatrixSarpras() {
+            const tbody = document.getElementById('kontrolTableBody');
+            const thead = document.getElementById('kontrolTableDates');
+            const jurnalBody = document.getElementById('jurnalTableBody');
+            
+            const dateObj = new Date(document.getElementById('sTgl').value || new Date());
+            const year = dateObj.getFullYear();
+            const month = dateObj.getMonth();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const monthNames = ["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+            
+            document.getElementById('lblBulanTahun').innerText = `${monthNames[month]}-${year}`;
+            document.getElementById('sigDate').innerText = `Balikpapan, 19 ${monthNames[month]} ${year}`; 
+
+            let headerDates = '';
+            for(let i=1; i<=daysInMonth; i++) {
+                headerDates += `<th class="col-date col-date-screen">${i}</th>`;
+            }
+            thead.innerHTML = headerDates;
+
+            if(dbSarpras.length === 0) {
+                jurnalBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-slate-400 italic">Belum ada jurnal harian diinput.</td></tr>`;
+            } else {
+                let jHtml = '';
+                let sortedData = [...dbSarpras].sort((a,b) => new Date(b.date) - new Date(a.date));
+                sortedData.forEach(j => {
+                    jHtml += `<tr>
+                        <td class="p-2.5 font-semibold">${j.date}</td>
+                        <td class="p-2.5">${j.itemName || j.item}</td>
+                        <td class="p-2.5 text-center"><span class="px-2 py-0.5 rounded text-[10px] font-bold ${j.kondisi === 'Rusak' ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">${j.kondisi}</span></td>
+                        <td class="p-2.5 text-slate-600">${j.ket || '-'}</td>
+                        <td class="p-2.5 text-center"><button onclick="hapusJurnal(${j.id})" class="text-rose-500 hover:text-rose-700 p-1"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>`;
+                });
+                jurnalBody.innerHTML = jHtml;
+            }
+
+            let html = '';
+            let errorLogs = []; 
+
+            for(let cat in masterSarpras) {
+                html += `<tr class="bg-gray-100 font-bold"><td colspan="${4 + daysInMonth}" class="border border-black px-2 py-1 uppercase text-left">${cat}</td></tr>`;
+                
+                masterSarpras[cat].forEach((item, index) => {
+                    let row = `<tr>
+                        <td class="col-no font-semibold">${index + 1}</td>
+                        <td class="col-komponen leading-tight px-1 font-semibold">${item.name}</td>`;
+                    
+                    let tindakLanjutList = [];
+                    let rusakCount = 0;
+                    let hasInputAny = false;
+                    
+                    for(let day=1; day<=daysInMonth; day++) {
+                        let checkDate = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                        let record = dbSarpras.find(d => d.item === item.id && d.date === checkDate);
+                        
+                        if(!record) {
+                            row += `<td class="col-date col-date-screen"></td>`; 
+                        } else if(record.kondisi === 'Baik') {
+                            row += `<td class="col-date col-date-screen tanda-baik">✓</td>`;
+                            hasInputAny = true;
+                        } else {
+                            row += `<td class="col-date col-date-screen tanda-rusak">✗</td>`;
+                            if(record.ket) tindakLanjutList.push(`(Tgl ${day}: ${record.ket})`);
+                            errorLogs.push(`Tgl ${day}: ${item.name} - ${record.ket || 'Rusak'}`);
+                            rusakCount++;
+                            hasInputAny = true;
+                        }
+                    }
+                    
+                    let uptimeText = "-";
+                    let warnaUptime = "text-slate-400";
+                    
+                    if (hasInputAny) {
+                        let uptimePercent = Math.max(0, Math.round(((daysInMonth - rusakCount) / daysInMonth) * 100));
+                        if (uptimePercent === 100) {
+                            uptimeText = "100% (Optimal)";
+                            warnaUptime = "text-emerald-700 font-bold text-[7.5pt]";
+                        } else if (uptimePercent >= 80) {
+                            uptimeText = `${uptimePercent}% (Stabil)`;
+                            warnaUptime = "text-blue-700 font-bold text-[7.5pt]";
+                        } else {
+                            uptimeText = `${uptimePercent}% (Perhatian)`;
+                            warnaUptime = "text-rose-600 font-bold text-[7.5pt]";
+                        }
+                    }
+                    
+                    row += `<td class="col-aspek leading-tight px-1 italic">${item.desc}</td>
+                        <td class="col-kondisi text-center ${warnaUptime}">${uptimeText}</td>
+                        <td class="col-tindak leading-tight px-1 text-[7px] md:text-[9px]">${tindakLanjutList.join(', ')}</td>
+                    </tr>`;
+                    html += row;
+                });
+            }
+            tbody.innerHTML = html;
+            
+            const logBox = document.getElementById('recentSarprasLog');
+            if(errorLogs.length === 0) {
+                logBox.innerHTML = `<p class="text-center text-sm text-slate-400 py-6 italic">Tidak ada catatan kerusakan yang diinput.</p>`;
+            } else {
+                let logHtml = '<ul class="divide-y divide-slate-100 text-xs">';
+                errorLogs.reverse().slice(0, 10).forEach(l => {
+                    logHtml += `<li class="p-3 text-rose-700 font-medium"><i class="fa-solid fa-triangle-exclamation mr-2 text-rose-500"></i> ${l}</li>`;
+                });
+                logHtml += '</ul>';
+                logBox.innerHTML = logHtml;
+            }
+            
+            updateDashboardCardsAndCharts(errorLogs.length);
+        }
+
+        function syncText(targetId, val) { document.getElementById(targetId).innerText = val; }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.tab-btn').forEach(el => {
-                el.classList.remove('bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-600/20');
-                el.classList.add('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
-            });
-
-            const targetTab = document.getElementById(`tab-content-${tabId}`);
-            if(targetTab) targetTab.classList.remove('hidden');
-
+            document.querySelectorAll('.tab-btn').forEach(el => { el.classList.remove('bg-brand-600', 'text-white'); el.classList.add('text-slate-300'); });
+            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
             const activeBtn = document.getElementById(`nav-${tabId}`);
-            if(activeBtn) {
-                activeBtn.classList.add('bg-brand-600', 'text-white', 'shadow-lg', 'shadow-brand-600/20');
-                activeBtn.classList.remove('text-slate-300', 'hover:bg-slate-800', 'hover:text-white');
-            }
+            if(activeBtn) { activeBtn.classList.add('bg-brand-600', 'text-white'); activeBtn.classList.remove('text-slate-300'); }
+            document.getElementById('mainContent').scrollTo(0, 0);
+            if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebarOverlay').classList.add('hidden'); }
+            
+            document.getElementById('pageTitle').innerText = tabId === 'dashboard' ? 'Dashboard Utama' : tabId === 'genset' ? 'Perawatan Genset' : tabId === 'kontrol' ? 'Kontrol Sarpras' : 'Pusat Laporan';
+        }
 
-            const titles = {
-                dashboard: 'Dashboard Manajemen Fasilitas',
-                genset: 'Modul Perawatan Genset',
-                agenda: 'Agenda Pemeliharaan Kampus',
-                laporan: 'Pusat Laporan & Rekapitulasi'
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.remove('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.remove('hidden');
+        });
+        document.getElementById('mobileCloseBtn').addEventListener('click', () => {
+            document.getElementById('sidebar').classList.add('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.add('hidden');
+        });
+
+        document.getElementById('gensetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newData = {
+                tanggal: document.getElementById('tanggal').value,
+                nama: document.getElementById('nama').value,
+                jamAwal: document.getElementById('jamAwal').value,
+                jamAkhir: document.getElementById('jamAkhir').value,
+                kondisi: document.getElementById('kondisi').value,
+                keterangan: document.getElementById('keterangan').value || '-',
+                dokumentasi: ""
             };
-            const pageTitleEl = document.getElementById('pageTitle');
-            if(pageTitleEl) pageTitleEl.innerText = titles[tabId] || 'Portal STIEPAN';
+            const btn = document.getElementById('submitBtn');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
+            btn.disabled = true;
 
-            if(window.innerWidth < 768) {
-                const sidebar = document.getElementById('sidebar');
-                if(sidebar) sidebar.classList.add('-translate-x-full');
-            }
-        }
+            fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newData) })
+            .then(() => {
+                setTimeout(() => {
+                    muatData();
+                    document.getElementById('gensetForm').reset();
+                    btn.innerHTML = 'Simpan Data Genset'; btn.disabled = false;
+                    showToast('Genset berhasil di-upload!', 'success');
+                }, 1500);
+            }).catch(() => { showToast('Gagal sinkron.', 'warning'); btn.innerHTML = 'Simpan Data Genset'; btn.disabled = false; });
+        });
 
-        // Mobile Sidebar Toggle
-        const mobileToggle = document.getElementById('mobileToggle');
-        if(mobileToggle) {
-            mobileToggle.addEventListener('click', () => {
-                const sidebar = document.getElementById('sidebar');
-                if(sidebar) sidebar.classList.toggle('hidden');
-            });
-        }
-        const mobileCloseBtn = document.getElementById('mobileCloseBtn');
-        if(mobileCloseBtn) {
-            mobileCloseBtn.addEventListener('click', () => {
-                const sidebar = document.getElementById('sidebar');
-                if(sidebar) sidebar.classList.add('hidden');
-            });
-        }
-
-        // Toggle Keterangan field based on select condition
-        if(kondisiSelect) {
-            kondisiSelect.addEventListener('change', function() {
-                if (this.value === 'Bermasalah') {
-                    if(keteranganContainer) keteranganContainer.classList.remove('hidden');
-                    if(keteranganInput) keteranganInput.required = true;
-                } else {
-                    if(keteranganContainer) keteranganContainer.classList.add('hidden');
-                    if(keteranganInput) {
-                        keteranganInput.required = false;
-                        keteranganInput.value = '';
-                    }
-                }
-            });
-        }
-
-        // Fungsi Memuat Data
         async function muatData() {
-            if(tableBody) tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-400 italic">Memuat data...</td></tr>`;
-            if(dashboardTableBody) dashboardTableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400 italic">Memuat data...</td></tr>`;
-
             try {
                 let response = await fetch(WEB_APP_URL);
-                let result = await response.json();
-                if (Array.isArray(result)) {
-                    dataPerawatan = result;
-                } else {
-                    dataPerawatan = [];
-                }
-                renderAll();
-            } catch (error) {
-                console.warn("Gagal memuat dari cloud, menggunakan data lokal/fallback:", error);
-                dataPerawatan = JSON.parse(localStorage.getItem('dataGensetStiepan')) || [];
-                renderAll();
-            }
+                dbGenset = await response.json();
+                if(!Array.isArray(dbGenset)) dbGenset = [];
+            } catch (error) { dbGenset = []; }
+            renderTableGenset();
         }
 
-        // Submit new data handler dengan validasi Jam Awal & Jam Akhir
-        if(form) {
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
+        function renderTableGenset() {
+            const tBody = document.getElementById('tableBody');
+            tBody.innerHTML = '';
+            if (dbGenset.length === 0) { tBody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">Data kosong</td></tr>`; return; }
 
-                const jamAwal = document.getElementById('jamAwal').value;
-                const jamAkhir = document.getElementById('jamAkhir').value;
-
-                if (jamAkhir < jamAwal) {
-                    showToast('Jam akhir tidak boleh lebih awal dari jam mulai!', 'warning');
-                    return;
-                }
-
-                const newData = {
-                    tanggal: document.getElementById('tanggal').value,
-                    nama: document.getElementById('nama').value,
-                    jamAwal: jamAwal,
-                    jamAkhir: jamAkhir,
-                    kondisi: document.getElementById('kondisi').value,
-                    keterangan: document.getElementById('keterangan').value || '-'
-                };
-
-                if(submitBtn) {
-                    submitBtn.innerText = "Menyimpan ke Cloud...";
-                    submitBtn.disabled = true;
-                }
-
-                try {
-                    await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(newData)
-                    });
-
-                    setTimeout(async () => {
-                        await muatData();
-                        form.reset();
-                        if(kondisiSelect) kondisiSelect.dispatchEvent(new Event('change'));
-                        if(submitBtn) {
-                            submitBtn.innerText = "Simpan Data ke Cloud";
-                            submitBtn.disabled = false;
-                        }
-                        showToast('Data berhasil disimpan ke cloud secara real-time!', 'success');
-                    }, 1500);
-
-                } catch (error) {
-                    console.error("Gagal menyimpan:", error);
-                    showToast('Terjadi kesalahan saat menyimpan data.', 'warning');
-                    if(submitBtn) {
-                        submitBtn.innerText = "Simpan Data ke Cloud";
-                        submitBtn.disabled = false;
-                    }
-                }
-            });
-        }
-
-        // Render Table & Statistics
-        function renderAll() {
-            renderTable();
-            renderDashboardStats();
-        }
-
-        function renderTable(filteredData = null) {
-            const dataSource = filteredData || dataPerawatan;
-            if(!tableBody) return;
-            tableBody.innerHTML = '';
-            
-            if (dataSource.length === 0) {
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="7" class="text-center py-6 text-slate-400 italic">Belum ada data rekapan perawatan.</td>
-                    </tr>
-                `;
-                return;
-            }
-
-            dataSource.forEach((data, index) => {
-                let formatTanggal = data.tanggal;
-                try {
-                    const dateObj = new Date(data.tanggal);
-                    if (!isNaN(dateObj)) {
-                        formatTanggal = dateObj.toLocaleDateString('id-ID', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-                    }
-                } catch (e) {
-                    formatTanggal = data.tanggal;
-                }
-
-                const bersihJamAwal = formatJam(data.jamAwal);
-                const bersihJamAkhir = formatJam(data.jamAkhir);
-
-                const kondisiStyle = data.kondisi === 'Normal' 
-                    ? '<span class="bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full text-xs font-semibold">Normal</span>' 
-                    : '<span class="bg-rose-100 text-rose-800 px-2.5 py-1 rounded-full text-xs font-semibold">Bermasalah</span>';
-
+            dbGenset.forEach((d, i) => {
                 const tr = document.createElement('tr');
-                tr.classList.add('hover:bg-slate-50', 'transition-colors');
-                tr.innerHTML = `
-                    <td class="border border-slate-200 px-4 py-3 text-center font-medium text-slate-600">${index + 1}</td>
-                    <td class="border border-slate-200 px-4 py-3 whitespace-nowrap text-slate-700">${formatTanggal}</td>
-                    <td class="border border-slate-200 px-4 py-3 font-medium text-slate-900">${data.nama || '-'}</td>
-                    <td class="border border-slate-200 px-4 py-3 text-center text-slate-600">${bersihJamAwal}</td>
-                    <td class="border border-slate-200 px-4 py-3 text-center text-slate-600">${bersihJamAkhir}</td>
-                    <td class="border border-slate-200 px-4 py-3 text-center">${kondisiStyle}</td>
-                    <td class="border border-slate-200 px-4 py-3 text-slate-600">${data.keterangan || '-'}</td>
-                `;
-                tableBody.appendChild(tr);
+                tr.innerHTML = `<td class="print-genset">${i + 1}</td><td class="print-genset">${d.tanggal}</td><td class="print-genset">${d.nama}</td><td class="print-genset text-center">${d.kondisi}</td><td class="print-genset">${d.keterangan}</td>`;
+                tBody.appendChild(tr);
+            });
+            renderMatrixSarpras();
+        }
+
+        function updateDashboardCardsAndCharts(totalSarprasRusakCount) {
+            const gensetNormal = dbGenset.filter(i => i.kondisi === 'Normal').length;
+            const gensetRusak = dbGenset.filter(i => i.kondisi === 'Bermasalah').length;
+
+            document.getElementById('statGensetNormal').innerText = gensetNormal;
+            document.getElementById('statGensetRusak').innerText = gensetRusak;
+
+            // Total item standar sarpras = 13 item
+            const totalItemStandar = 13;
+            const uniqueSarprasRusak = [...new Set(dbSarpras.filter(s => s.kondisi === 'Rusak').map(s => s.item))].length;
+            const sarprasNormalCount = Math.max(0, totalItemStandar - uniqueSarprasRusak);
+
+            document.getElementById('statSarprasNormal').innerText = sarprasNormalCount;
+            document.getElementById('statSarprasRusak').innerText = uniqueSarprasRusak;
+
+            const ctxDonut = document.getElementById('kondisiChart');
+            if (statusChartInstance) statusChartInstance.destroy();
+
+            statusChartInstance = new Chart(ctxDonut, {
+                type: 'doughnut',
+                data: { 
+                    labels: ['Genset Normal', 'Genset Masalah', 'Sarpras Normal', 'Sarpras Masalah'], 
+                    datasets: [{ 
+                        data: [gensetNormal || 1, gensetRusak, sarprasNormalCount, uniqueSarprasRusak], 
+                        backgroundColor: ['#2563eb', '#f59e0b', '#10b981', '#f43f5e'], 
+                        borderWidth: 0 
+                    }] 
+                },
+                options: { cutout: '70%', responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, font: { size: 10 } } } } }
             });
         }
 
-        function renderDashboardStats() {
-            const total = dataPerawatan.length;
-            const normal = dataPerawatan.filter(item => item.kondisi === 'Normal').length;
-            const bermasalah = dataPerawatan.filter(item => item.kondisi === 'Bermasalah').length;
-
-            const statTotalEl = document.getElementById('statTotal');
-            const statNormalEl = document.getElementById('statNormal');
-            const statBermasalahEl = document.getElementById('statBermasalah');
-
-            if(statTotalEl) statTotalEl.innerText = total;
-            if(statNormalEl) statNormalEl.innerText = normal;
-            if(statBermasalahEl) statBermasalahEl.innerText = bermasalah;
-
-            if(!dashboardTableBody) return;
-            dashboardTableBody.innerHTML = '';
-            const recent = dataPerawatan.slice(0, 5);
-            if(recent.length === 0) {
-                dashboardTableBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-slate-400 italic">Belum ada aktivitas.</td></tr>`;
-                return;
-            }
-
-            recent.forEach(item => {
-                let formatTanggal = item.tanggal;
-                try {
-                    const dateObj = new Date(item.tanggal);
-                    if (!isNaN(dateObj)) {
-                        formatTanggal = dateObj.toLocaleDateString('id-ID', {
-                            day: '2-digit', month: 'short', year: 'numeric'
-                        });
-                    }
-                } catch(e) {}
-
-                const badge = item.kondisi === 'Normal' 
-                    ? '<span class="text-emerald-600 font-semibold text-xs bg-emerald-50 px-2 py-0.5 rounded-full">Normal</span>' 
-                    : '<span class="text-rose-600 font-semibold text-xs bg-rose-50 px-2 py-0.5 rounded-full">Bermasalah</span>';
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td class="py-2.5 text-slate-700">${formatTanggal}</td>
-                    <td class="py-2.5 font-medium text-slate-900">${item.nama || '-'}</td>
-                    <td class="py-2.5">${badge}</td>
-                    <td class="py-2.5 text-slate-600 truncate max-w-xs">${item.keterangan || '-'}</td>
-                `;
-                dashboardTableBody.appendChild(tr);
-            });
+        function showToast(msg, type = 'success') {
+            const t = document.getElementById('toastNotification');
+            document.getElementById('toastMessage').innerText = msg;
+            document.getElementById('toastIcon').innerHTML = type === 'success' ? '<i class="fa-solid fa-circle-check text-emerald-400"></i>' : '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
+            t.classList.remove('translate-y-24', 'opacity-0');
+            setTimeout(() => t.classList.add('translate-y-24', 'opacity-0'), 3000);
         }
 
-        // Real-time Search Filter
-        function filterTableData() {
-            if(!searchInput) return;
-            const keyword = searchInput.value.toLowerCase();
-            const filtered = dataPerawatan.filter(item => 
-                (item.nama && item.nama.toLowerCase().includes(keyword)) || 
-                (item.kondisi && item.kondisi.toLowerCase().includes(keyword)) ||
-                (item.tanggal && item.tanggal.toLowerCase().includes(keyword)) ||
-                (item.keterangan && item.keterangan.toLowerCase().includes(keyword))
-            );
-            renderTable(filtered);
-        }
-
-        // Toast Notification System
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toastNotification');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
-
-            if(!toast) return;
-            toastMessage.innerText = message;
-            if(type === 'success') {
-                toastIcon.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
-            } else if(type === 'warning') {
-                toastIcon.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>';
-            } else {
-                toastIcon.innerHTML = '<i class="fa-solid fa-circle-info text-blue-400"></i>';
-            }
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3500);
-        }
-
-        // Inisialisasi muat data saat pertama kali dibuka
+        initFormSarpras();
         muatData();
     </script>
 </body>
