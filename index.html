@@ -26,7 +26,6 @@
     </script>
     <style>
         * { -webkit-tap-highlight-color: transparent; }
-        
         .preview-doc { font-size: 10px !important; }
         .preview-doc table th, .preview-doc table td { padding: 2px !important; }
         .col-date-screen { min-width: 16px; text-align: center; }
@@ -36,61 +35,38 @@
         @media print {
             html, body, .flex-1, main, #mainContent, .overflow-y-auto, .overflow-hidden { 
                 background: white !important; margin: 0 !important; padding: 0 !important;
-                height: auto !important; min-height: auto !important;
-                overflow: visible !important; position: static !important;
+                height: auto !important; min-height: auto !important; overflow: visible !important; position: static !important;
             }
-            
             aside, header, #sidebarOverlay, .no-print { display: none !important; }
-            
-            #print-area {
-                position: static !important; width: 100% !important;
-                max-width: 100% !important; background: white;
-                overflow: visible !important; padding: 0 !important; margin: 0 !important; border: none !important;
-            }
-            
-            table { 
-                border-collapse: collapse; width: 100% !important; 
-                table-layout: fixed !important; word-wrap: break-word !important;
-                page-break-inside: auto !important; 
-            }
+            #print-area { position: static !important; width: 100% !important; max-width: 100% !important; background: white; overflow: visible !important; padding: 0 !important; margin: 0 !important; border: none !important; }
+            table { border-collapse: collapse; width: 100% !important; table-layout: fixed !important; word-wrap: break-word !important; page-break-inside: auto !important; }
             thead { display: table-header-group !important; }
             tr { page-break-inside: avoid !important; page-break-after: auto !important; }
-            
-            th.print-genset, td.print-genset {
-                border: 1px solid #000 !important; padding: 4px !important;
-                color: black !important; font-size: 10px !important; vertical-align: middle;
-            }
+            th.print-genset, td.print-genset { border: 1px solid #000 !important; padding: 4px !important; color: black !important; font-size: 9px !important; vertical-align: middle; }
             th.print-genset { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; text-align: center !important; }
-            
             .kop-surat h1 { font-size: 13pt !important; margin-bottom: 2px !important; font-family: 'Times New Roman', serif; font-weight: bold; color: black;}
             .kop-surat h2 { font-size: 11pt !important; margin-bottom: 4px !important; font-family: 'Times New Roman', serif; font-weight: bold; color: black;}
             .kop-surat p { font-size: 7.5pt !important; margin: 1px 0 !important; font-family: 'Times New Roman', serif; color: black;}
             .garis-kop { border-top: 3px solid black !important; border-bottom: 1px solid black !important; padding-top: 1px; margin-top: 5px !important; margin-bottom: 10px !important;}
             .judul-form { font-size: 10pt !important; font-weight: bold; background-color: #fde047 !important; -webkit-print-color-adjust: exact; padding: 4px 10px; border: 1px solid black; display: inline-block; margin-bottom: 10px; color: black;}
-            
             .info-table td { border: none !important; padding: 2px !important; font-size: 8.5pt !important; font-weight: bold; color: black; vertical-align: top;}
-            
             .checklist-table th, .checklist-table td { border: 1px solid black !important; vertical-align: middle; }
             .checklist-table th { background-color: #f3f4f6 !important; -webkit-print-color-adjust: exact; text-align: center !important; font-size: 7.5pt !important; font-weight: bold; padding: 2px !important; color: black !important;}
             .checklist-table td { font-size: 6.5pt !important; padding: 2px !important; color: black !important;}
-            
             .col-no { width: 3%; text-align: center;}
             .col-komponen { width: 15%; padding-left: 4px !important; font-weight: bold;}
             .col-date { width: 1.5%; text-align: center; } 
             .col-aspek { width: 14%; padding-left: 4px !important; font-style: italic;}
             .col-kondisi { width: 7%; text-align: center; font-weight: bold; }
             .col-tindak { width: 9.5%; padding-left: 4px !important;}
-            
             .signature-area { page-break-inside: avoid; font-size: 9pt !important; margin-top: 20px; color: black !important;}
         }
     </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased flex h-[100dvh] w-full overflow-hidden">
 
-    <!-- Mobile Overlay -->
     <div id="sidebarOverlay" class="fixed inset-0 bg-slate-900/60 z-40 hidden md:hidden backdrop-blur-sm transition-opacity duration-300 opacity-0"></div>
 
-    <!-- Sidebar Navigation -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-[260px] md:w-64 bg-slate-900 text-slate-300 flex flex-col transform -translate-x-full md:relative md:translate-x-0 transition-transform duration-300 shadow-2xl flex-shrink-0">
         <div class="p-5 border-b border-slate-800 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -127,7 +103,6 @@
         </div>
     </aside>
 
-    <!-- Main Content Wrapper -->
     <div class="flex-1 flex flex-col min-w-0 h-full bg-slate-50 relative overflow-hidden">
         
         <header class="bg-white border-b border-slate-200 px-4 md:px-6 py-4 flex items-center justify-between z-20 shadow-sm flex-shrink-0">
@@ -148,7 +123,6 @@
 
             <!-- TAB 1: DASHBOARD -->
             <div id="tab-content-dashboard" class="tab-pane space-y-5 md:space-y-6">
-                <!-- Welcome Banner -->
                 <div class="bg-gradient-to-r from-brand-900 via-brand-800 to-blue-700 rounded-2xl p-5 md:p-8 text-white shadow-xl relative overflow-hidden">
                     <div class="absolute right-0 top-0 translate-x-8 -translate-y-8 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
                     <div class="relative z-10 max-w-2xl">
@@ -158,7 +132,6 @@
                     </div>
                 </div>
 
-                <!-- 4 Kotak Indikator -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
                     <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
                         <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Genset Normal</p><h4 id="statGensetNormal" class="text-xl md:text-2xl font-bold text-slate-900 mt-1">0</h4></div>
@@ -169,7 +142,7 @@
                         <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center text-sm md:text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div>
                     </div>
                     <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
-                        <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Sarpras Normal</p><h4 id="statSarprasNormal" class="text-xl md:text-2xl font-bold text-emerald-600 mt-1">13</h4></div>
+                        <div><p class="text-[10px] md:text-xs font-semibold text-slate-500 uppercase tracking-wider">Sarpras Normal</p><h4 id="statSarprasNormal" class="text-xl md:text-2xl font-bold text-emerald-600 mt-1">0</h4></div>
                         <div class="w-8 h-8 md:w-12 md:h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-sm md:text-xl"><i class="fa-solid fa-circle-check"></i></div>
                     </div>
                     <div class="bg-white p-4 md:p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -178,7 +151,6 @@
                     </div>
                 </div>
 
-                <!-- Grafik & Log Kerusakan -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
                     <div class="bg-white rounded-2xl p-4 md:p-6 border border-slate-200 shadow-sm flex flex-col justify-between items-center">
                         <div class="w-full text-left mb-4"><h4 class="font-bold text-slate-900 text-sm md:text-base">Kondisi Fasilitas Keseluruhan</h4><p class="text-xs text-slate-500">Rekapitulasi Genset & Sarana Prasarana</p></div>
@@ -211,8 +183,9 @@
                         <div><label class="block text-xs font-semibold text-slate-700 mb-1">Petugas</label><input type="text" id="nama" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
                         <div><label class="block text-xs font-semibold text-slate-700 mb-1">Jam Awal</label><input type="time" id="jamAwal" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
                         <div><label class="block text-xs font-semibold text-slate-700 mb-1">Jam Akhir</label><input type="time" id="jamAkhir" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></div>
-                        <div class="sm:col-span-2"><label class="block text-xs font-semibold text-slate-700 mb-1">Kondisi</label><select id="kondisi" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"><option value="Normal">Normal</option><option value="Bermasalah">Bermasalah</option></select></div>
-                        <div id="keteranganContainer" class="sm:col-span-2 hidden"><label class="block text-xs font-semibold text-slate-700 mb-1">Keterangan</label><textarea id="keterangan" rows="2" class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"></textarea></div>
+                        <div><label class="block text-xs font-semibold text-slate-700 mb-1">Kondisi</label><select id="kondisi" required class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600"><option value="Normal">Normal</option><option value="Bermasalah">Bermasalah</option></select></div>
+                        <div><label class="block text-xs font-semibold text-slate-700 mb-1">Upload Dokumentasi (Foto)</label><input type="file" id="fotoGenset" accept="image/*" class="w-full border rounded-xl px-3 py-1.5 text-xs bg-white file:mr-4 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100"></div>
+                        <div class="sm:col-span-2"><label class="block text-xs font-semibold text-slate-700 mb-1">Keterangan</label><textarea id="keterangan" rows="2" class="w-full border rounded-xl px-3 py-2 text-sm focus:border-brand-600" placeholder="Catatan pemeliharaan..."></textarea></div>
                         <div class="sm:col-span-2 pt-2"><button type="submit" id="submitBtn" class="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-3 px-6 rounded-xl transition text-sm">Simpan Data Genset</button></div>
                     </form>
                 </div>
@@ -230,12 +203,15 @@
                                     <th class="print-genset border border-slate-200 px-3 py-2 w-10 text-center">No</th>
                                     <th class="print-genset border border-slate-200 px-3 py-2 w-24 text-center">Tgl</th>
                                     <th class="print-genset border border-slate-200 px-3 py-2">Nama</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2 text-center">Jam Awal</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2 text-center">Jam Akhir</th>
                                     <th class="print-genset border border-slate-200 px-3 py-2 text-center">Kondisi</th>
                                     <th class="print-genset border border-slate-200 px-3 py-2">Keterangan</th>
+                                    <th class="print-genset border border-slate-200 px-3 py-2 text-center">Dokumentasi</th>
                                 </tr>
                             </thead>
                             <tbody id="tableBody" class="text-xs divide-y divide-slate-200">
-                                <tr><td colspan="5" class="text-center py-6 text-slate-400 italic">Data dimuat dari cloud...</td></tr>
+                                <tr><td colspan="8" class="text-center py-6 text-slate-400 italic">Data dimuat dari cloud...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -256,7 +232,6 @@
                     </button>
                 </div>
 
-                <!-- Input Setup & Harian -->
                 <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm no-print space-y-6">
                     <div>
                         <h4 class="font-bold text-slate-800 text-sm mb-3"><i class="fa-solid fa-sliders text-brand-600 mr-2"></i> Pengaturan Kop Laporan</h4>
@@ -312,7 +287,6 @@
                         </form>
                     </div>
 
-                    <!-- TABEL JURNAL HARIAN DETAIL -->
                     <div class="pt-4 border-t border-slate-100">
                         <div class="flex items-center justify-between mb-3">
                             <h4 class="font-bold text-slate-800 text-sm"><i class="fa-solid fa-book-open text-brand-600 mr-2"></i> Jurnal Log Harian Detail</h4>
@@ -337,13 +311,11 @@
                     </div>
                 </div>
 
-                <!-- PREVIEW & CETAK FORM KONTROL (Responsive 100% Zoom) -->
                 <div class="bg-white p-2 md:p-4 rounded-2xl border border-slate-200 shadow-sm overflow-x-auto">
                     <div class="text-xs text-slate-500 mb-2 italic no-print"><i class="fa-solid fa-eye"></i> Live Preview: Tampilan Kertas Saat Dicetak (Landscape A4)</div>
                     
                     <div id="print-area-kontrol" class="print-area preview-doc w-full min-w-[800px] print:min-w-0 bg-white mx-auto border border-slate-100 print:border-none p-2 print:p-0">
                         
-                        <!-- KOP SURAT -->
                         <div class="kop-surat flex items-center justify-between px-2 pt-2">
                             <div class="w-16 md:w-20 text-center border-2 border-slate-800 rounded-full h-16 md:h-20 flex items-center justify-center p-1 md:p-2 font-bold font-serif leading-tight text-[8px] md:text-[10px]">
                                 SEKOLAH TINGGI<br>ILMU EKONOMI<br>BALIKPAPAN
@@ -373,7 +345,6 @@
                             <tr><td>Petugas Pemeriksa</td><td>:</td><td id="lblPetugas">Wandi / Parimin</td></tr>
                         </table>
 
-                        <!-- TABEL UTAMA -->
                         <table class="checklist-table w-full border-collapse text-left text-[8px] md:text-[10px]">
                             <thead>
                                 <tr>
@@ -384,16 +355,11 @@
                                     <th rowspan="2" class="col-kondisi w-12 md:w-16">Kondisi (Uptime)</th>
                                     <th rowspan="2" class="col-tindak w-20 md:w-28">Tindak Lanjut Kepala BAU</th>
                                 </tr>
-                                <tr id="kontrolTableDates">
-                                    <!-- Diisi via JS -->
-                                </tr>
+                                <tr id="kontrolTableDates"></tr>
                             </thead>
-                            <tbody id="kontrolTableBody">
-                                <!-- Render Otomatis via JS -->
-                            </tbody>
+                            <tbody id="kontrolTableBody"></tbody>
                         </table>
                         
-                        <!-- TANDA TANGAN -->
                         <div class="signature-area w-full flex justify-end pr-10 mt-6 pb-6 text-[9px] md:text-xs">
                             <div class="text-center font-serif">
                                 <p id="sigDate" class="mb-1">Balikpapan, 19 Oktober 2026</p>
@@ -408,7 +374,6 @@
                 </div>
             </div>
             
-            <!-- TAB 4: PUSAT LAPORAN -->
             <div id="tab-content-laporan" class="tab-pane hidden space-y-6">
                 <div class="bg-white p-4 md:p-6 rounded-2xl border border-slate-200 shadow-sm">
                     <h3 class="text-lg md:text-xl font-bold text-slate-900 mb-4">Pusat Laporan Ekspor</h3>
@@ -427,7 +392,7 @@
                                 <h4 class="font-bold text-slate-900 text-sm mb-1">Form Kontrol Sarpras (Landscape)</h4>
                                 <p class="text-[11px] text-slate-600">Formulir cerdas matriks tanggal ter-update otomatis (Kertas Mendatar).</p>
                             </div>
-                            <button onclick="switchTab('kontrol'); setTimeout(() => doPrint('kontrol'), 300);" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition">Buka & Cetak Kontrol</button>
+                            <button onclick="switchTab('kontrol'); setTimeout(() => doPrint('kontrol'), 300);" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-6 py-3 rounded-xl text-xs transition">Buka & Cetak Kontrol</button>
                         </div>
                     </div>
                 </div>
@@ -442,7 +407,6 @@
         
         function doPrint(type) {
             document.querySelectorAll('.print-area').forEach(el => el.removeAttribute('id'));
-            
             if (type === 'kontrol') {
                 printStyle.innerHTML = '@page { size: A4 landscape; margin: 10mm 12mm; }';
                 document.querySelector('#tab-content-kontrol .print-area').setAttribute('id', 'print-area');
@@ -454,13 +418,11 @@
         }
     </script>
 
-    <!-- TOAST NOTIFIKASI -->
     <div id="toastNotification" class="fixed bottom-4 right-4 md:bottom-6 md:right-6 bg-slate-900 text-white px-4 md:px-5 py-3 rounded-xl shadow-2xl z-50 transform translate-y-24 opacity-0 transition-all duration-300 flex items-center space-x-3 text-xs md:text-sm">
         <span id="toastIcon" class="text-emerald-400 text-base"><i class="fa-solid fa-circle-check"></i></span>
         <span id="toastMessage">Pemberitahuan...</span>
     </div>
 
-    <!-- LOGIC APLIKASI -->
     <script>
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw4VPNIJHQdluEMftg5eTuQk9eRMuG_2HRKMcCBSe8QBpDwu6RNxdifbVWyPCWfTWlinQ/exec";
 
@@ -503,6 +465,7 @@
                 catSelect.innerHTML += `<option value="${cat}">${cat}</option>`;
             }
             document.getElementById('sTgl').value = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
             updateSubItem();
             renderMatrixSarpras();
         }
@@ -536,7 +499,6 @@
             
             showToast(`Jurnal komponen "${itemName}" berhasil ditambahkan!`, 'success');
             document.getElementById('sKeterangan').value = ''; 
-            
             renderMatrixSarpras();
         });
 
@@ -655,7 +617,7 @@
                 logBox.innerHTML = logHtml;
             }
             
-            updateDashboardCardsAndCharts(errorLogs.length);
+            updateDashboardCardsAndCharts();
         }
 
         function syncText(targetId, val) { document.getElementById(targetId).innerText = val; }
@@ -668,7 +630,6 @@
             if(activeBtn) { activeBtn.classList.add('bg-brand-600', 'text-white'); activeBtn.classList.remove('text-slate-300'); }
             document.getElementById('mainContent').scrollTo(0, 0);
             if(window.innerWidth < 768) { document.getElementById('sidebar').classList.add('-translate-x-full'); document.getElementById('sidebarOverlay').classList.add('hidden'); }
-            
             document.getElementById('pageTitle').innerText = tabId === 'dashboard' ? 'Dashboard Utama' : tabId === 'genset' ? 'Perawatan Genset' : tabId === 'kontrol' ? 'Kontrol Sarpras' : 'Pusat Laporan';
         }
 
@@ -683,28 +644,49 @@
 
         document.getElementById('gensetForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const newData = {
-                tanggal: document.getElementById('tanggal').value,
-                nama: document.getElementById('nama').value,
-                jamAwal: document.getElementById('jamAwal').value,
-                jamAkhir: document.getElementById('jamAkhir').value,
-                kondisi: document.getElementById('kondisi').value,
-                keterangan: document.getElementById('keterangan').value || '-',
-                dokumentasi: ""
-            };
+            const fileInput = document.getElementById('fotoGenset');
             const btn = document.getElementById('submitBtn');
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memproses...';
             btn.disabled = true;
 
-            fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newData) })
-            .then(() => {
-                setTimeout(() => {
-                    muatData();
-                    document.getElementById('gensetForm').reset();
-                    btn.innerHTML = 'Simpan Data Genset'; btn.disabled = false;
-                    showToast('Genset berhasil di-upload!', 'success');
-                }, 1500);
-            }).catch(() => { showToast('Gagal sinkron.', 'warning'); btn.innerHTML = 'Simpan Data Genset'; btn.disabled = false; });
+            const processSave = (imageUrl) => {
+                const newData = {
+                    tanggal: document.getElementById('tanggal').value,
+                    nama: document.getElementById('nama').value,
+                    jamAwal: document.getElementById('jamAwal').value,
+                    jamAkhir: document.getElementById('jamAkhir').value,
+                    kondisi: document.getElementById('kondisi').value,
+                    keterangan: document.getElementById('keterangan').value || '-',
+                    dokumentasi: imageUrl || ''
+                };
+
+                fetch(WEB_APP_URL, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newData) })
+                .then(() => {
+                    setTimeout(() => {
+                        dbGenset.unshift(newData);
+                        renderTableGenset();
+                        document.getElementById('gensetForm').reset();
+                        document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+                        btn.innerHTML = 'Simpan Data Genset'; btn.disabled = false;
+                        showToast('Genset berhasil disimpan & di-upload!', 'success');
+                    }, 1000);
+                }).catch(() => { 
+                    dbGenset.unshift(newData);
+                    renderTableGenset();
+                    showToast('Disimpan lokal (offline mode).', 'warning'); 
+                    btn.innerHTML = 'Simpan Data Genset'; btn.disabled = false; 
+                });
+            };
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    processSave(uploadEvent.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                processSave('');
+            }
         });
 
         async function muatData() {
@@ -719,27 +701,60 @@
         function renderTableGenset() {
             const tBody = document.getElementById('tableBody');
             tBody.innerHTML = '';
-            if (dbGenset.length === 0) { tBody.innerHTML = `<tr><td colspan="5" class="text-center py-6 text-slate-400 italic">Data kosong</td></tr>`; return; }
+            if (dbGenset.length === 0) { tBody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400 italic">Data kosong</td></tr>`; updateDashboardCardsAndCharts(); return; }
 
             dbGenset.forEach((d, i) => {
+                const cleanDate = d.tanggal ? d.tanggal.split('T')[0] : '-';
+                
+                // Ekstraksi jam yang handal untuk menangani format dari Google Sheets
+                let cleanTime = (val) => {
+                    if (!val) return '-';
+                    let str = String(val).trim();
+                    if (str.includes('T')) {
+                        str = str.split('T')[1];
+                    }
+                    // Jika format ISO waktu dari Apps Script (misal: "1899-12-30T03:16:00.000Z")
+                    let match = str.match(/(\d{2}):(\d{2})/);
+                    if (match) {
+                        return match[1] + ':' + match[2];
+                    }
+                    if (str.length >= 5 && str.includes(':')) {
+                        return str.substring(0, 5);
+                    }
+                    return str;
+                };
+
+                const cleanJamAwal = cleanTime(d.jamAwal);
+                const cleanJamAkhir = cleanTime(d.jamAkhir);
+
+                const imgTag = d.dokumentasi ? `<img src="${d.dokumentasi}" class="w-12 h-12 object-cover rounded-lg mx-auto border shadow-sm">` : `<span class="text-slate-400 italic text-[10px]">Tidak ada</span>`;
+                
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td class="print-genset">${i + 1}</td><td class="print-genset">${d.tanggal}</td><td class="print-genset">${d.nama}</td><td class="print-genset text-center">${d.kondisi}</td><td class="print-genset">${d.keterangan}</td>`;
+                tr.innerHTML = `
+                    <td class="print-genset text-center">${i + 1}</td>
+                    <td class="print-genset text-center">${cleanDate}</td>
+                    <td class="print-genset">${d.nama}</td>
+                    <td class="print-genset text-center">${cleanJamAwal}</td>
+                    <td class="print-genset text-center">${cleanJamAkhir}</td>
+                    <td class="print-genset text-center font-bold ${d.kondisi === 'Normal' ? 'text-emerald-700' : 'text-rose-600'}">${d.kondisi}</td>
+                    <td class="print-genset">${d.keterangan}</td>
+                    <td class="print-genset text-center">${imgTag}</td>
+                `;
                 tBody.appendChild(tr);
             });
-            renderMatrixSarpras();
+            updateDashboardCardsAndCharts();
         }
 
-        function updateDashboardCardsAndCharts(totalSarprasRusakCount) {
+        function updateDashboardCardsAndCharts() {
             const gensetNormal = dbGenset.filter(i => i.kondisi === 'Normal').length;
             const gensetRusak = dbGenset.filter(i => i.kondisi === 'Bermasalah').length;
 
             document.getElementById('statGensetNormal').innerText = gensetNormal;
             document.getElementById('statGensetRusak').innerText = gensetRusak;
 
-            // Total item standar sarpras = 13 item
-            const totalItemStandar = 13;
+            const uniqueSarprasItems = [...new Set(dbSarpras.map(s => s.item))].length;
             const uniqueSarprasRusak = [...new Set(dbSarpras.filter(s => s.kondisi === 'Rusak').map(s => s.item))].length;
-            const sarprasNormalCount = Math.max(0, totalItemStandar - uniqueSarprasRusak);
+            const sarprasNormalCount = uniqueSarprasItems > 0 ? (uniqueSarprasItems - uniqueSarprasRusak) : 0;
 
             document.getElementById('statSarprasNormal').innerText = sarprasNormalCount;
             document.getElementById('statSarprasRusak').innerText = uniqueSarprasRusak;
@@ -752,7 +767,7 @@
                 data: { 
                     labels: ['Genset Normal', 'Genset Masalah', 'Sarpras Normal', 'Sarpras Masalah'], 
                     datasets: [{ 
-                        data: [gensetNormal || 1, gensetRusak, sarprasNormalCount, uniqueSarprasRusak], 
+                        data: [gensetNormal || (gensetRusak === 0 && sarprasNormalCount === 0 && uniqueSarprasRusak === 0 ? 1 : 0), gensetRusak, sarprasNormalCount, uniqueSarprasRusak], 
                         backgroundColor: ['#2563eb', '#f59e0b', '#10b981', '#f43f5e'], 
                         borderWidth: 0 
                     }] 
