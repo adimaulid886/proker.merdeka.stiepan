@@ -692,8 +692,22 @@
         async function muatData() {
             try {
                 let response = await fetch(WEB_APP_URL);
-                dbGenset = await response.json();
-                if(!Array.isArray(dbGenset)) dbGenset = [];
+                let rawData = await response.json();
+                if(Array.isArray(rawData)) {
+                    // Mapping disesuaikan presisi dengan urutan kolom Google Sheets Anda:
+                    // Kolom B (r[1]) = Tanggal, Kolom C (r[2]) = Nama, Kolom D (r[3]) = Jam Awal, Kolom E (r[4]) = Jam Akhir, Kolom F (r[5]) = Kondisi, Kolom G (r[6]) = Keterangan, Kolom H (r[7]) = Dokumentasi
+                    dbGenset = rawData.map(r => ({
+                        tanggal: r[1] || r.tanggal,
+                        nama: r[2] || r.nama,
+                        jamAwal: r[3] || r.jamAwal,
+                        jamAkhir: r[4] || r.jamAkhir,
+                        kondisi: r[5] || r.kondisi,
+                        keterangan: r[6] || r.keterangan,
+                        dokumentasi: r[7] || r.dokumentasi || ""
+                    })).filter(item => item.nama); // Filter baris kosong
+                } else {
+                    dbGenset = [];
+                }
             } catch (error) { dbGenset = []; }
             renderTableGenset();
         }
@@ -704,28 +718,22 @@
             if (dbGenset.length === 0) { tBody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400 italic">Data kosong</td></tr>`; updateDashboardCardsAndCharts(); return; }
 
             dbGenset.forEach((d, i) => {
-                const cleanDate = d.tanggal ? d.tanggal.split('T')[0] : '-';
-                
-                // PEMBERSIH JAM ULTRA-HANDAL: Menghilangkan semua teks zona waktu, tanggal sampah, dan hanya mengambil pola HH:MM
+                // Pembersih Tanggal (Mengambil format YYYY-MM-DD secara aman)
+                let cleanDate = '-';
+                if (d.tanggal) {
+                    let dStr = String(d.tanggal).trim();
+                    if (dStr.includes('T')) dStr = dStr.split('T')[0];
+                    cleanDate = dStr.substring(0, 10);
+                }
+
+                // Pembersih Jam (Mengambil format HH:MM secara presisi)
                 let cleanTime = (val) => {
                     if (!val) return '-';
                     let str = String(val).trim();
-                    
-                    // Jika mengandung format ISO atau objek Date dari Apps Script
-                    if (str.includes('T')) {
-                        str = str.split('T')[1];
-                    }
-                    
-                    // Cari pola 2 digit angka diikuti titik dua dan 2 digit angka (contoh: 03:16 atau 15:30)
+                    if (str.includes('T')) str = str.split('T')[1];
                     let match = str.match(/(\d{2}):(\d{2})/);
-                    if (match) {
-                        return match[1] + ':' + match[2];
-                    }
-                    
-                    // Fallback jika berupa string pendek
-                    if (str.length >= 5 && str.includes(':')) {
-                        return str.substring(0, 5);
-                    }
+                    if (match) return match[1] + ':' + match[2];
+                    if (str.length >= 5 && str.includes(':')) return str.substring(0, 5);
                     return str;
                 };
 
@@ -738,11 +746,11 @@
                 tr.innerHTML = `
                     <td class="print-genset text-center">${i + 1}</td>
                     <td class="print-genset text-center">${cleanDate}</td>
-                    <td class="print-genset">${d.nama}</td>
+                    <td class="print-genset">${d.nama || '-'}</td>
                     <td class="print-genset text-center">${cleanJamAwal}</td>
                     <td class="print-genset text-center">${cleanJamAkhir}</td>
-                    <td class="print-genset text-center font-bold ${d.kondisi === 'Normal' ? 'text-emerald-700' : 'text-rose-600'}">${d.kondisi}</td>
-                    <td class="print-genset">${d.keterangan}</td>
+                    <td class="print-genset text-center font-bold ${d.kondisi === 'Normal' ? 'text-emerald-700' : 'text-rose-600'}">${d.kondisi || 'Normal'}</td>
+                    <td class="print-genset">${d.keterangan || '-'}</td>
                     <td class="print-genset text-center">${imgTag}</td>
                 `;
                 tBody.appendChild(tr);
@@ -752,7 +760,7 @@
 
         function updateDashboardCardsAndCharts() {
             const gensetNormal = dbGenset.filter(i => i.kondisi === 'Normal').length;
-            const gensetRusak = dbGenset.filter(i => i.kondisi === 'Bermasalah').length;
+            const gensetRusak = dbGenset.filter(i => i.kondisi === 'Bermasalah' || i.kondisi === 'Rusak').length;
 
             document.getElementById('statGensetNormal').innerText = gensetNormal;
             document.getElementById('statGensetRusak').innerText = gensetRusak;
