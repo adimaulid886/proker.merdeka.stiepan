@@ -392,7 +392,7 @@
                                 <h4 class="font-bold text-slate-900 text-sm mb-1">Form Kontrol Sarpras (Landscape)</h4>
                                 <p class="text-[11px] text-slate-600">Formulir cerdas matriks tanggal ter-update otomatis (Kertas Mendatar).</p>
                             </div>
-                            <button onclick="switchTab('kontrol'); setTimeout(() => doPrint('kontrol'), 300);" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-6 py-3 rounded-xl text-xs transition">Buka & Cetak Kontrol</button>
+                            <button onclick="switchTab('kontrol'); setTimeout(() => doPrint('kontrol'), 300);" class="mt-4 w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-2.5 px-4 rounded-xl text-xs transition">Buka & Cetak Kontrol</button>
                         </div>
                     </div>
                 </div>
@@ -706,18 +706,23 @@
             dbGenset.forEach((d, i) => {
                 const cleanDate = d.tanggal ? d.tanggal.split('T')[0] : '-';
                 
-                // Ekstraksi jam yang handal untuk menangani format dari Google Sheets
+                // PEMBERSIH JAM ULTRA-HANDAL: Menghilangkan semua teks zona waktu, tanggal sampah, dan hanya mengambil pola HH:MM
                 let cleanTime = (val) => {
                     if (!val) return '-';
                     let str = String(val).trim();
+                    
+                    // Jika mengandung format ISO atau objek Date dari Apps Script
                     if (str.includes('T')) {
                         str = str.split('T')[1];
                     }
-                    // Jika format ISO waktu dari Apps Script (misal: "1899-12-30T03:16:00.000Z")
+                    
+                    // Cari pola 2 digit angka diikuti titik dua dan 2 digit angka (contoh: 03:16 atau 15:30)
                     let match = str.match(/(\d{2}):(\d{2})/);
                     if (match) {
                         return match[1] + ':' + match[2];
                     }
+                    
+                    // Fallback jika berupa string pendek
                     if (str.length >= 5 && str.includes(':')) {
                         return str.substring(0, 5);
                     }
