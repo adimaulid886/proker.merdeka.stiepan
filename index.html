@@ -424,6 +424,7 @@
     </div>
 
     <script>
+        // GANTI DENGAN URL WEB APP BARU JIKA ANDA MELAKUKAN DEPLOY ULANG (NEW DEPLOYMENT)
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw4VPNIJHQdluEMftg5eTuQk9eRMuG_2HRKMcCBSe8QBpDwu6RNxdifbVWyPCWfTWlinQ/exec";
 
         let statusChartInstance = null; 
@@ -694,17 +695,15 @@
                 let response = await fetch(WEB_APP_URL);
                 let rawData = await response.json();
                 if(Array.isArray(rawData)) {
-                    // Mapping disesuaikan presisi dengan urutan kolom Google Sheets Anda:
-                    // Kolom B (r[1]) = Tanggal, Kolom C (r[2]) = Nama, Kolom D (r[3]) = Jam Awal, Kolom E (r[4]) = Jam Akhir, Kolom F (r[5]) = Kondisi, Kolom G (r[6]) = Keterangan, Kolom H (r[7]) = Dokumentasi
                     dbGenset = rawData.map(r => ({
-                        tanggal: r[1] || r.tanggal,
-                        nama: r[2] || r.nama,
-                        jamAwal: r[3] || r.jamAwal,
-                        jamAkhir: r[4] || r.jamAkhir,
-                        kondisi: r[5] || r.kondisi,
-                        keterangan: r[6] || r.keterangan,
-                        dokumentasi: r[7] || r.dokumentasi || ""
-                    })).filter(item => item.nama); // Filter baris kosong
+                        tanggal: r.tanggal,
+                        nama: r.nama,
+                        jamAwal: r.jamAwal,
+                        jamAkhir: r.jamAkhir,
+                        kondisi: r.kondisi,
+                        keterangan: r.keterangan,
+                        dokumentasi: r.dokumentasi || ""
+                    })).filter(item => item.nama); 
                 } else {
                     dbGenset = [];
                 }
@@ -718,7 +717,6 @@
             if (dbGenset.length === 0) { tBody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400 italic">Data kosong</td></tr>`; updateDashboardCardsAndCharts(); return; }
 
             dbGenset.forEach((d, i) => {
-                // Pembersih Tanggal (Mengambil format YYYY-MM-DD secara aman)
                 let cleanDate = '-';
                 if (d.tanggal) {
                     let dStr = String(d.tanggal).trim();
@@ -726,19 +724,9 @@
                     cleanDate = dStr.substring(0, 10);
                 }
 
-                // Pembersih Jam (Mengambil format HH:MM secara presisi)
-                let cleanTime = (val) => {
-                    if (!val) return '-';
-                    let str = String(val).trim();
-                    if (str.includes('T')) str = str.split('T')[1];
-                    let match = str.match(/(\d{2}):(\d{2})/);
-                    if (match) return match[1] + ':' + match[2];
-                    if (str.length >= 5 && str.includes(':')) return str.substring(0, 5);
-                    return str;
-                };
-
-                const cleanJamAwal = cleanTime(d.jamAwal);
-                const cleanJamAkhir = cleanTime(d.jamAkhir);
+                // Tampil murni apa adanya dari getDisplayValues()
+                const cleanJamAwal = d.jamAwal ? String(d.jamAwal).trim() : '-';
+                const cleanJamAkhir = d.jamAkhir ? String(d.jamAkhir).trim() : '-';
 
                 const imgTag = d.dokumentasi ? `<img src="${d.dokumentasi}" class="w-12 h-12 object-cover rounded-lg mx-auto border shadow-sm">` : `<span class="text-slate-400 italic text-[10px]">Tidak ada</span>`;
                 
