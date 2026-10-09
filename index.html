@@ -424,7 +424,7 @@
     </div>
 
     <script>
-        // GANTI DENGAN URL WEB APP BARU JIKA ANDA MELAKUKAN DEPLOY ULANG (NEW DEPLOYMENT)
+        // URL WEB APP ANDA
         const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw4VPNIJHQdluEMftg5eTuQk9eRMuG_2HRKMcCBSe8QBpDwu6RNxdifbVWyPCWfTWlinQ/exec";
 
         let statusChartInstance = null; 
@@ -696,13 +696,13 @@
                 let rawData = await response.json();
                 if(Array.isArray(rawData)) {
                     dbGenset = rawData.map(r => ({
-                        tanggal: r.tanggal,
-                        nama: r.nama,
-                        jamAwal: r.jamAwal,
-                        jamAkhir: r.jamAkhir,
-                        kondisi: r.kondisi,
-                        keterangan: r.keterangan,
-                        dokumentasi: r.dokumentasi || ""
+                        tanggal: r.tanggal || r[1],
+                        nama: r.nama || r[2],
+                        jamAwal: r.jamAwal || r[3],
+                        jamAkhir: r.jamAkhir || r[4],
+                        kondisi: r.kondisi || r[5],
+                        keterangan: r.keterangan || r[6],
+                        dokumentasi: r.dokumentasi || r[7] || ""
                     })).filter(item => item.nama); 
                 } else {
                     dbGenset = [];
@@ -717,16 +717,32 @@
             if (dbGenset.length === 0) { tBody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-400 italic">Data kosong</td></tr>`; updateDashboardCardsAndCharts(); return; }
 
             dbGenset.forEach((d, i) => {
+                
+                // Pembersih Tanggal Cerdas
                 let cleanDate = '-';
                 if (d.tanggal) {
                     let dStr = String(d.tanggal).trim();
-                    if (dStr.includes('T')) dStr = dStr.split('T')[0];
-                    cleanDate = dStr.substring(0, 10);
+                    let dateMatch = dStr.match(/\d{4}-\d{2}-\d{2}/);
+                    if(dateMatch) {
+                        cleanDate = dateMatch[0];
+                    } else if (dStr.includes('T')) {
+                        cleanDate = dStr.split('T')[0];
+                    } else {
+                        cleanDate = dStr.substring(0, 10);
+                    }
                 }
 
-                // Tampil murni apa adanya dari getDisplayValues()
-                const cleanJamAwal = d.jamAwal ? String(d.jamAwal).trim() : '-';
-                const cleanJamAkhir = d.jamAkhir ? String(d.jamAkhir).trim() : '-';
+                // PEMBERSIH JAM TERKUAT: Mampu memindai dan menarik murni format jam (15:38) dari barisan string berantakan
+                let extractTime = (val) => {
+                    if (!val) return '-';
+                    let str = String(val).trim();
+                    // Mencari pola 2 digit : 2 digit (contoh: 15:38, 08:05, 14:15)
+                    let match = str.match(/([0-9]{2}:[0-9]{2})/);
+                    return match ? match[1] : str;
+                };
+
+                const cleanJamAwal = extractTime(d.jamAwal);
+                const cleanJamAkhir = extractTime(d.jamAkhir);
 
                 const imgTag = d.dokumentasi ? `<img src="${d.dokumentasi}" class="w-12 h-12 object-cover rounded-lg mx-auto border shadow-sm">` : `<span class="text-slate-400 italic text-[10px]">Tidak ada</span>`;
                 
@@ -735,8 +751,8 @@
                     <td class="print-genset text-center">${i + 1}</td>
                     <td class="print-genset text-center">${cleanDate}</td>
                     <td class="print-genset">${d.nama || '-'}</td>
-                    <td class="print-genset text-center">${cleanJamAwal}</td>
-                    <td class="print-genset text-center">${cleanJamAkhir}</td>
+                    <td class="print-genset text-center font-bold text-slate-800">${cleanJamAwal}</td>
+                    <td class="print-genset text-center font-bold text-slate-800">${cleanJamAkhir}</td>
                     <td class="print-genset text-center font-bold ${d.kondisi === 'Normal' ? 'text-emerald-700' : 'text-rose-600'}">${d.kondisi || 'Normal'}</td>
                     <td class="print-genset">${d.keterangan || '-'}</td>
                     <td class="print-genset text-center">${imgTag}</td>
